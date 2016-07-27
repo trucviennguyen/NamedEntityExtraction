@@ -1,0 +1,23 @@
+/*
+ *  clear_lookup.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Clear_FirstPerson
+Input: FirstPerson
+Options: control = brill debug = no
+
+Rule: Remove_FirstPerson
+(
+   {FirstPerson}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+

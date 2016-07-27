@@ -1,0 +1,54 @@
+/*
+ *  remove_insideLR_loc.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Remove_InsideLR_Location
+Input: LR_TempLocation
+Options: control = brill debug = no
+
+
+///////////////////////////////////////////////////////////////////
+// Location Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempLocation có dạng đầy đủ (vd. có tiền tố công ty hay loại hình công ty), 
+ * loại bỏ tất cả các chú giải TempPerson và TempLocation trùng một phần hay toàn phần
+ */
+
+Rule:	Remove_InsideLR_Location
+Priority: 145
+(
+   {LR_TempLocation}
+)
+:locName
+-->
+{
+	gate.AnnotationSet locSet = (gate.AnnotationSet)bindings.get("locName");
+	gate.Annotation locAnn = (gate.Annotation)locSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = locAnn.getStartNode().getOffset();
+	Long extendEnd = locAnn.getEndNode().getOffset();
+
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		Long extendStart1 = ann.getStartNode().getOffset();
+		Long extendEnd1 = ann.getEndNode().getOffset();
+
+		if (ann.getType().equalsIgnoreCase("TempPerson") || ann.getType().equalsIgnoreCase("TempLocation") 
+		|| ann.getType().equalsIgnoreCase("TempOrganization"))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+

@@ -1,0 +1,68 @@
+/*
+ *  person_null_filter.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Person_Null_Filter
+Input: TempPerson
+Options: control = appelt debug = no
+
+
+/* Đối với mỗi thực thể TempPerson không có inst (ie. không có trong KB)
+ * Loại bỏ tất cả các chú giải nằm trùng một phần 
+ * hoặc toàn phần mà không phải TempLocation và TempOrganization
+ */
+Rule: Person_Null_Filter
+Priority: 40
+(
+   {TempPerson.inst == "null"}
+)
+:person
+ -->
+{
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("person");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	String pure = (String)personAnn.getFeatures().get("originalName");
+
+	Long extendStart = personAnn.getStartNode().getOffset();
+	Long extendEnd = personAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	java.util.HashSet remSet = new java.util.HashSet();
+	Iterator iter = tempSet.iterator();
+
+	while (iter.hasNext())
+	{
+		Annotation ann = (Annotation)iter.next();
+		String inst1 = (String)ann.getFeatures().get("inst");
+
+		if (ann.getType().equals("NamedEntity") || ann.getType().equals("Np") 
+		|| ann.getType().equals("Token") || ann.getType().equals("SpaceToken") 
+		|| ann.getType().equals("Split")
+		|| ann.getType().equalsIgnoreCase("Title") || ann.getType().equalsIgnoreCase("JobTitle"))
+			remSet.add(ann);
+		else if ((ann.getType().equals("TempLocation") || ann.getType().equals("TempOrganization"))
+		&& pure != null && ann.getEndNode().getOffset().intValue() + pure.length() == extendEnd.intValue() - 1)
+			remSet.add(ann);
+		else if (extendStart.intValue() == ann.getStartNode().getOffset().intValue() 
+		&& extendEnd.intValue() == ann.getEndNode().getOffset().intValue())
+		{
+			if (ann.getType().equals("TempLocation") || ann.getType().equals("TempOrganization"))
+				remSet.add(ann);
+		}
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	gate.FeatureMap features = personAnn.getFeatures();
+	features.put("rule", "Person_Null_Filter");
+	annotations.add(personSet.firstNode(), personSet.lastNode(), "TempPerson", features);
+}
+
+

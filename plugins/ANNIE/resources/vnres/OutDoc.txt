@@ -1,0 +1,408 @@
+Sẽ	Np
+cắt điện	Nc, Ng, Na, Vit, Aa, Vt
+luân phiên	Ng, Na, Vit, Nc, Aa, Vt
+tại	Nc, Ng, Aa, Na, Vt, Vit
+các	Nc, Ng, Aa, Vt, Na, Vit
+quận	Nc, Ng, Aa, Vt, Na, Vit
+nội thành	Nc, Ng, Aa, Vt, Na, Vit
+Công ty Điện lực	Nc, Ng, Aa, Vt, Na, Vit
+Hà Nội	Nc, Aa, Ng, Vit, Vt, Na
+cho	Cc, Vt, I, X
+biết	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+từ	Nc, Ng, Aa, Vt, Na, Vit
+7/4	Nc, Ng, Aa, Vt, Vit, Na
+,	,
+việc	Nc, Ng, Aa, Vt, Na, Vit
+cắt tiết	Nc, Ng, Aa, Vt, Na, Vit
+giảm	Nc, Ng, Aa, Vt, Na, Vit
+điện	Nc, Ng, Aa, Vt, Na, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+thực hiện	Nc, Ng, Aa, Vt, Na, Vit
+trên	Nc, Ng, Aa, Vt, Na, Vit
+toàn	Nc, Ng, Aa, Vt, Na, Vit
+thành phố	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Tuy nhiên	Nc, Vit, Vt, Ng, Aa, Na
+,	,
+công ty	Nc, Ng, Aa, Vt, Na, Vit
+này	Nc, Ng, Aa, Vt, Na, Vit
+khẳng định	Nc, Ng, Aa, Vt, Na, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+không để	Nc, Ng, Aa, Vt, Na, Vit
+hộ	Nc, Ng, Aa, Vt, Na, Vit
+dân	Nc, Ng, Aa, Vt, Na, Vit
+nào	Nc, Ng, Aa, Vt, Na, Vit
+bị	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vit, Na, Vt
+hai	Nn, Na
+ngày	Vit, Vt, Aa, Nc, Ng, Np
+liên tiếp	Nc, Ng, Vit, Na, Vt, Aa
+.	.
+>	Nc, Ng, Aa, Na, Vit, Vt
+Ảnh Hà Nội	Nc, Ng, Aa, Vt, Na, Vit
+vào	Nc, Ng, Aa, Na, Vit, Vt
+'	'
+mùa	Nc, Ng, Aa, Na, Vit, Vt
+'	'
+cắt điện	Nc, Ng, Aa, Na, Vit, Vt
+/	Nc, Ng, Aa, Na, Vt, Vit
+Hà Nội	Nc, Ng, Aa, Vt, Na, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+nhiều	Nc, Ng, Aa, Vt, Na, Vit
+tuyến	Nc, Ng, Aa, Vt, Na, Vit
+phố	Nc, Ng, Aa, Vit, Na, Vt
+trong	Nl, Cm, Na, Aa
+tháng 4	Vit, Aa, Nc, Np, Ng, X
+Theo	Np
+ông	Nc, Ng, Na, Vit, Aa, Vt
+Nguyễn Anh Tuấn	Ng, Na, Vit, Nc, Aa, Vt
+,	,
+Trưởng phòng	Nc, Ng, Aa, Vt, Na, Vit
+kinh doanh	Vit
+Công ty điện lực  Hà Nội	Nc, Ng, Aa, Np, Vit, Na
+,	,
+việc	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, X, Vt, Vit
+trong	Nl, Cm, Na, Aa
+tháng 3	Vit, Nc, Ng, Np, Aa, Na
+chủ yếu	Ng, Nc, Aa, Na, Vt, Np
+để	Nc, Ng, Aa, Na, Vt, Vit
+sửa chữa	Nc, Ng, Aa, Vt, Na, Vit
+đường dây	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Sang	Np
+tháng 4	Ng, Nc, Np, Vt, Aa, Vit
+này	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+với	Nc, Ng, Aa, Vt, Na, Vit
+mức	Nc, Ng, Aa, Vt, Na, Vit
+dự báo	Nc, Ng, Aa, Vt, Na, Vit
+thiếu hụt	Nc, Ng, Aa, Vt, Na, Vit
+trên	Nc, Ng, Aa, Vit, Na, Vt
+10	Nn
+triệu	Vit, Vt, Aa, Nc, Ng, Np
+kWh	Nc, Ng, Na, Vit, Vt, Aa
+(	(
+tương đương	Nc, Ng, Aa, Vit, Na, Vt
+mức	Ng, Aa, Na, Vit, Nc, Vt
+tiêu thụ điện	Nc, Ng, Aa, Na, Vt, Vit
+một	Nc, Ng, Aa, Vt, Na, Vit
+ngày	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+cả	Nc, Ng, Aa, Vt, Na, Vit
+thành phố	Ng, Vit, Nc, Na, Vt, Aa
+)	)
+,	,
+việc	Ng, Aa, Na, Vit, Nc, Np
+cắt điện	Nc, Ng, Aa, Na, Vt, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+được	Nc, Ng, Aa, Vt, Na, Vit
+thực hiện	Nc, Ng, Aa, Vt, Na, Vit
+gắt gao	Nc, Ng, Aa, Vt, Na, Vit
+hơn	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Theo	Np
+đó	Ng, Nc, Na, Aa, Vt, Vit
+,	,
+cả	Nc, Ng, Aa, Vt, Na, Vit
+các	Nc, Ng, Aa, Vt, Na, Vit
+quận	Nc, Ng, Aa, Vt, Na, Vit
+trung tâm	Nc, Ng, Aa, Vt, Na, Vit
+cũng	Nc, Ng, Aa, Vt, Na, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+bị	Nc, Ng, Aa, Vt, Na, Vit
+cắt	Nc, Ng, Aa, Vt, Na, Vit
+luân phiên	Nc, Ng, Aa, Vt, Na, Vit
+từ	Nc, Ng, Aa, Vit, Na, Vt
+5	Nn
+h	Vit, Vt, Aa, Nc, Ng, Np
+sáng	Ng, Nc, Na, Vt, Vit, Aa
+đến	Nc, Ng, Na, Aa, Vit, Vt
+18	Nn
+hoặc	Vt, Vit, Aa, Ng, Nc, Np
+20	Nn
+h	Aa, Vit, Vt, Nc, Ng, Np
+tối	Nc, Ng, Na, Vit, Aa, Vt
+.	.
+Hiện	Np
+,	,
+công ty điện lực	Nc, Ng, Aa, Vt, Na, Vit
+Hà Nội	Nc, Ng, Aa, Vt, Na, Vit
+được	Nc, Ng, Aa, Vt, Na, Vit
+Tập đoàn	Nc, Ng, Aa, Vt, Na, Vit
+điện lực	Nc, Ng, Aa, Vt, Na, Vit
+Việt Nam	Nc, Ng, Aa, Vt, Na, Vit
+phân bổ	Nc, Ng, Aa, Vt, Na, Vit
+chỉ tiêu	Nc, Ng, Aa, Vt, Na, Vit
+ở	Nc, Ng, Aa, Vt, Na, Vit
+mức	Nc, Ng, Aa, Vit, Na, Vt
+14	Nn
+,	,
+3	Nn
+triệu	Vit, Aa, Nc, Ng, Vt, Np
+kWH	Ng, Nc, Na, Vt, Vit, Aa
+một	Nc, Ng, Aa, Na, Vt, Vit
+ngày	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Trong khi	Nc, Vit, Vt, Ng, Aa, Na
+,	,
+những	Nc, Ng, Aa, Vt, Na, Vit
+ngày	Nc, Ng, Aa, Vt, Na, Vit
+cao điểm	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+mức	Nc, Ng, Aa, Vt, Na, Vit
+tiêu thụ	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+thủ đô	Nc, Ng, Aa, Vt, Na, Vit
+lên đến	Nc, Ng, Aa, Vt, Na, Vit
+17-18	Nc, Ng, Aa, Vt, Na, Vit
+triệu	Nc, Ng, Aa, Vt, Na, Vit
+kWh	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Với	Np
+dự báo	Ng, Nc, Np, Vt, Aa, Vit
+về	Nc, Ng, Aa, Na, Vit, Vt
+tình hình	Nc, Ng, Aa, Vt, Na, Vit
+thời tiết	Nc, Ng, Aa, Vt, Na, Vit
+mùa	Nc, Ng, Aa, Vt, Na, Vit
+hè	Nc, Ng, Aa, Vt, Na, Vit
+năm	Nc, Aa, Ng, Na, Vit, Vt
+nay	Pd
+,	,
+Hà Nội	Nc, Ng, Aa, Na, Vt, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+thiếu	Nc, Ng, Aa, Vt, Na, Vit
+điện	Nc, Ng, Aa, Vt, Na, Vit
+đến	Nc, Ng, Aa, Vt, Na, Vit
+hết	Nc, Ng, Aa, Vt, Na, Vit
+tháng	Ng, Nc, Aa, Na, Vit, Vt
+6	Nn
+.	.
+Công nhân	Ng, Aa, Vit, Nc, Na, Vt
+điện lực	Nc, Ng, Aa, Na, Vt, Vit
+Hà Nội	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+ở	Nc, Ng, Aa, Vt, Na, Vit
+nội thành	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Ảnh	Np
+:	:
+Nguyễn Hưng	Nc, Aa, Na, Vit, Vt, Ng
+.	.
+Công nhân	Nc, Ng, Aa, Na, Vit, Vt
+điện lực	Nc, Ng, Aa, Vt, Na, Vit
+Hà Nội	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+ở	Nc, Ng, Aa, Vt, Na, Vit
+nội thành	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Ảnh	Np
+:	:
+Nguyễn Hưng	Nc, Aa, Na, Vit, Vt, Ng
+.	.
+Trao đổi	Nc, Ng, Aa, Na, Vit, Vt
+với	Vit, Nc, Ng, Aa, Vt, Na
+VnExpress	Np
+,	,
+bà	Nc, Ng, Aa, Vt, Na, Vit
+Nguyễn Thị Minh Huệ	Nc, Ng, Aa, Vt, Vit, Na
+,	,
+Phó phòng	Nc, Ng, Aa, Vt, Na, Vit
+thi đua	Nc, Ng, Aa, Vt, Vit, Na
+-	-
+tuyên truyền	Ng, Aa, Vit, Vt, Nc, Na
+Điện lực  Hà Nội	Na, Nc, Ng, Aa, Vt, Vit
+,	,
+cho	Cc, Vt, I, X
+biết	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+là	Nc, Ng, Aa, Vt, Na, Vit
+việc	Nc, Ng, Aa, Vt, Na, Vit
+bất đắc dĩ	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Hàng năm	Nc, Vit, Vt, Ng, Aa, Na
+,	,
+mức	Nc, Ng, Aa, Vt, Na, Vit
+tiêu thụ điện	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+thủ đô	Nc, Ng, Aa, Vt, Na, Vit
+tăng	Nc, Ng, Aa, Vt, Na, Vit
+trên	Nc, Ng, Aa, Vit, Na, Vt
+15	Nn
+%	Vit, Vt, Aa, Nc, Ng, Np
+trong khi	Ng, Nc, Na, Vt, Vit, Aa
+mức	Nc, Ng, Aa, Na, Vit, Vt
+cung	Nu, Vt, Nc, Na
+không được	Vit, Aa, Nc, Ng, Np, Na
+cải thiện	Ng, Nc, Aa, Vit, Na, Vt
+.	.
+Đây	Np
+là	Ng, Nc, Np, Vt, Aa, Vit
+năm	Nc, Ng, Aa, Na, Vit, Vt
+thứ tư	Nc, Ng, Aa, Vt, Na, Vit
+liên tiếp	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+điện lực	Nc, Ng, Aa, Vt, Na, Vit
+Hà Nội	Nc, Ng, Aa, Vt, Na, Vit
+tiến hành	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+tiết giảm	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+"	"
+Chúng tôi	Ng, Na, Vit, Aa, Nc, Np
+sẽ	Nc, Na, Vit, Ng, Aa, Vt
+cố gắng	Nc, Ng, Aa, Vt, Na, Vit
+sắp xếp	Nc, Ng, Aa, Vt, Na, Vit
+lịch	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+để	Nc, Ng, Aa, Vt, Na, Vit
+đỡ	Nc, Ng, Aa, Vt, Na, Vit
+ảnh hưởng	Nc, Ng, Aa, Vt, Na, Vit
+đến	Nc, Ng, Aa, Vt, Na, Vit
+sinh hoạt	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+người dân	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Không có	Nc, Ng, Aa, Na, Vit, Vt
+nơi	Nc, Ng, Aa, Vt, Na, Vit
+nào	Nc, Ng, Aa, Vt, Na, Vit
+bị	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vit, Na, Vt
+hai	Nn, Na
+ngày	Vit, Vt, Aa, Nc, Ng, Np
+liên tiếp	Nc, Ng, Vit, Vt, Na, Np
+"	"
+,	,
+bà	Vit, Ng, Aa, Na, Vt, Nc
+Huệ	Np
+nói	Na, Ng, Nc, Aa, X, Vit
+.	.
+Trước	Np
+phản ánh	Ng, Nc, Np, Vt, Aa, Vit
+của	Nc, Ng, Aa, Na, Vit, Vt
+người dân	Nc, Ng, Aa, Vt, Na, Vit
+về	Nc, Ng, Aa, Vt, Na, Vit
+việc	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+không	Nc, Ng, Aa, Vt, Na, Vit
+đúng	Nc, Ng, Aa, Vit, Na, Vt
+theo	Vt
+lịch	Nc, Ng, Aa, Na, Vit, Vt
+trong	Nl, Cm, Na, Aa
+thời gian	Vit, Nc, Ng, Np, Aa, Na
+vừa rồi	Nc, Ng, Aa, Na, Vt, Np
+,	,
+bà	Aa, Nc, Vit, Ng, Vt, Na
+Huệ	Np
+khẳng định	Ng, Nc, Na, Vt, Aa, Vit
+:	:
+"	"
+Không có	Ng, Aa, Na, Nc, Vit, Vt
+chuyện	Nc, Ng, Aa, Na, Vt, Vit
+không	Nc, Ng, Aa, Vt, Na, Vit
+thông báo	Nc, Ng, Aa, Vt, Na, Vit
+mà lại	Nc, Ng, Aa, Vt, Na, Vit
+cắt	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Chỉ	Np
+có	Ng, Nc, Np, Vt, Aa, Vit
+một vài	Nc, Ng, Aa, Na, Vit, Vt
+trường hợp	Nc, Ng, Aa, Vt, Na, Vit
+chúng tôi	Nc, Ng, Aa, Vt, Na, Vit
+cắt điện	Nc, Ng, Aa, Vt, Na, Vit
+sớm	Nc, Ng, Aa, Vt, Na, Vit
+hoặc	Nc, Ng, Aa, Vt, Na, Vit
+đóng	Nc, Ng, Aa, Vt, Na, Vit
+muộn	Nc, Ng, Aa, Vt, Na, Vit
+hơn	Nc, Ng, Aa, Vt, Na, Vit
+thông báo	Nc, Aa, Ng, Na, Vit, Vt
+do	Cm, Nc
+có	Nc, Ng, Aa, Na, Vt, Vit
+trục trặc	Nc, Ng, Aa, Vt, Na, Vit
+phát sinh	Nc, Ng, Aa, Vit, Na, Vt
+trong	Nl, Cm, Na, Aa
+quá trình	Vit, Nc, Ng, Np, Aa, Na
+bảo dưỡng	Ng, Nc, Aa, Na, Vt, Np
+đường dây	Vit, Vt, Na, Nc, Ng, Aa
+"	"
+.	.
+Công ty Điện lực  Hà Nội	Ng, Aa, Nc, Vit, Na, Vt
+khuyến cáo	Nc, Ng, Aa, Na, Vt, Vit
+người dân	Nc, Ng, Aa, Vt, Na, Vit
+nên	Nc, Ng, Aa, Vt, Na, Vit
+hạn chế	Nc, Ng, Aa, Vt, Na, Vit
+sử dụng	Nc, Ng, Aa, Vt, Na, Vit
+các	Nc, Ng, Aa, Vt, Na, Vit
+thiết bị	Nc, Ng, Aa, Vt, Na, Vit
+tiêu thụ	Nc, Ng, Aa, Vt, Na, Vit
+nhiều	Nc, Ng, Aa, Vt, Na, Vit
+điện	Nc, Ng, Aa, Vt, Na, Vit
+như	Nc, Ng, Aa, Vt, Na, Vit
+máy sấy	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+bàn là	Nc, Ng, Aa, Na, Vt, Vit
+,	,
+bình	Nc, Ng, Aa, Vt, Na, Vit
+nóng lạnh	Nc, Ng, Aa, Vt, Vit, Na
+,	,
+máy giặt	Nc, Ng, Aa, Vt, Na, Vit
+…	Nc, Ng, Aa, X, Vt, Vit
+trong	Nl, Cm, Na, Aa
+giờ cao điểm	Vit, Nc, Ng, Np, Aa, Na
+buổi tối	Nc, Ng, Aa, Na, Vt, Vit
+(	(
+18	Nn
+h	Aa, Vit, Vt, Ng, Nc, Na
+đến	Ng, Aa, Nc, Vit, X, Na
+22	Nn
+h	Aa, Vit, Vt, Nc, Ng, Np
+)	)
+.	.
+Khi	Np
+mất điện	Ng, Nc, Na, Aa, Vt, Vit
+,	,
+người dân	Nc, Ng, Aa, Vt, Na, Vit
+không nên	Nc, Ng, Aa, Vt, Na, Vit
+bật	Nc, Ng, Aa, Vt, Na, Vit
+sẵn	Nc, Ng, Aa, Vt, Na, Vit
+các	Nc, Ng, Aa, Vt, Na, Vit
+thiết bị	Nc, Ng, Aa, Vt, Na, Vit
+điện	Nc, Ng, Aa, Vt, Na, Vit
+để	Nc, Ng, Aa, Vt, Na, Vit
+chờ	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+tránh	Nc, Ng, Aa, Vt, Na, Vit
+nguy cơ	Nc, Ng, Aa, Vt, Na, Vit
+chập	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+cháy	Nc, Ng, Aa, Vt, Na, Vit
+khi	Nl, Vim, Vt, Vtim, Na
+có	Vit, Nc, Ng, Np, Aa, Na
+điện trở	Ng, Nc, Aa, Na, Vt, Np
+lại	Nc, Ng, Aa, Na, Vit, Vt
+.	.
+Đồng thời	Nc, Vit, Vt, Ng, Aa, Na
+,	,
+việc	Nc, Ng, Aa, Vt, Na, Vit
+này	Nc, Ng, Aa, Vt, Na, Vit
+cũng	Nc, Ng, Aa, Vt, Na, Vit
+giúp	Nc, Ng, Aa, Vt, Na, Vit
+hệ thống	Nc, Ng, Aa, Vt, Na, Vit
+không	Nc, Ng, Aa, Vt, Na, Vit
+bị	Nc, Ng, Aa, Vt, Na, Vit
+quá tải	Nc, Ng, Aa, Vit, Na, Vt
+khi	Nl, Vim, Vt, Vtim, Na
+vừa	Vit, Nc, Ng, Np, Aa, Na
+đóng	Ng, Nc, Aa, Na, Vt, Np
+điện	Nc, Ng, Aa, Na, Vt, Vit
+vì	Nc, Ng, Aa, Vt, Na, Vit
+cùng	Nc, Ng, Aa, Vt, Na, Vit
+một lúc	Nc, Ng, Aa, Vt, Na, Vit
+nhu cầu	Nc, Ng, Aa, Vt, Na, Vit
+sử dụng	Nc, Ng, Aa, Vt, Na, Vit
+tăng	Nc, Ng, Aa, Vt, Na, Vit
+đột biến	Nc, Aa, Ng, Vit, Na, Vt
+.	.

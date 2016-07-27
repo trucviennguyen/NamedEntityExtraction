@@ -1,0 +1,24 @@
+/*
+ *  clear_token_upper.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+//note: organization should be included as part of the address ??
+
+Phase:	Clear_Token_Upper
+Input: Token_Upper
+Options: control = brill debug = no
+
+Rule: Clear_Token_Upper
+(
+   {Token_Upper}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}

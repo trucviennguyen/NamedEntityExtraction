@@ -1,0 +1,28 @@
+Phase:	ne_post
+Input: Lookup Sentence Split Token Number Pp Upper Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+Options: control = appelt debug = no
+
+Rule: NamedEntity_Upper
+Priority: 3000
+(
+   {Upper} |
+   {FirstPerson} |
+   {LastPerson}
+):namedEntity
+-->
+{
+	gate.AnnotationSet ne = (gate.AnnotationSet)bindings.get("namedEntity");
+	gate.Annotation neAnn = (gate.Annotation)ne.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	// Remove all annotations inside
+	Long extendStart = neAnn.getStartNode().getOffset();
+	Long extendEnd = neAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.get("NamedEntity", extendStart, extendEnd);
+
+	if (tempSet == null || tempSet.size() == 0)
+	{
+		features.put("rule", "NamedEntity_Post");
+		annotations.add(ne.firstNode(), ne.lastNode(), "NamedEntity", features);
+	}
+}

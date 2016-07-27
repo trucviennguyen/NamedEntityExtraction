@@ -1,0 +1,259 @@
+/*
+ *  organization_name_ex.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Organization_Name_Ex
+Input: 	Sentence Split Token Number Pp Np TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLDT
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////
+// Organization Rules
+
+
+Rule: OrganizationContext1a
+Priority: 200
+(
+   ({TempOrganization.kind == organizationPlus}):availableOrg
+   {Token.string == "và"}
+)
+(
+   {TempOrganization}
+):org
+ -->
+{
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.Annotation orgAnn = (gate.Annotation)org.iterator().next();
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation avOrgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	gate.FeatureMap features = orgAnn.getFeatures();
+	features.put("kind", avOrgAnn.getFeatures().get("kind"));
+	features.put("rule", "OrganizationContext1a");
+	annotations.remove(orgAnn);
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+
+Rule: OrganizationContext1b
+Priority: 100
+(
+   ({TempOrganization.kind == organizationPlus}):availableOrg
+   {Token.string == "và"}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", orgAnn.getFeatures().get("kind"));
+	features.put("rule", "OrganizationContext1b");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+
+Rule: NotOrganizationContext2
+Priority: 60
+(
+   {TempOrganization}
+   {Token.string == "và"}
+   {TempOrganization}
+):noNeed
+ -->
+{}
+
+
+Rule: OrganizationContext2a
+Priority: 40
+(
+   ({TempOrganization}):availableOrg
+   {Token.string == "và"}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", orgAnn.getFeatures().get("kind"));
+	features.put("rule", "OrganizationContext2a");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+Rule: OrganizationContext2b
+Priority: 40
+// He and Mary
+// Anne and I
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+{Token.string == "và"}
+({TempOrganization}):availableOrg
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", "organizationName");
+	features.put("rule", "OrganizationContext2b");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+/*
+Rule: OrganizationContext3a
+Priority: 40
+// Anne and I
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+(
+   {Token.string == ","}
+   ({TempOrganization.kind == organizationPlus}):availableOrg
+)
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", "organizationName");
+	features.put("rule", "OrganizationContext3a");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+*/
+
+Rule: OrganizationContext3b
+Priority: 40
+// He and Mary
+(
+   {Token.string == "Các"} |
+   {Token.string == "các"} |
+   {Token.string == "Những"}
+   {Token.string == "những"}
+   {Token.string == "Một"}
+   {Token.string == "một"}
+   {Token.string == "Hai"}
+   {Token.string == "hai"}
+   {Token.string == "Ba"}
+   {Token.string == "ba"}
+   {Token.string == "Bốn"}
+   {Token.string == "bốn"}
+   {Token.string == "năm"}
+   {Token.string == "sáu"}
+   {Token.string == "Bảy"}
+   {Token.string == "bảy"}
+   {Token.string == "Tám"}
+   {Token.string == "tám"}
+   {Token.string == "Chín"}
+   {Token.string == "chín"}
+   {Token.string == "Mười"}
+   {Token.string == "mười"}
+)
+(
+   ({TempOrganization.kind == organizationPlus}):availableOrg
+   {Token.string == ","}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", "organizationPlus");
+	features.put("rule", "OrganizationContext3b");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+
+Rule: OrganizationContext4a
+Priority: 40
+// Anne and I
+(
+   {Token.string == "như"}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+(
+   {Token.string == ","}
+   ({TempOrganization}):availableOrg
+)
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", orgAnn.getFeatures().get("kind"));
+	features.put("rule", "OrganizationContext4a");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+
+Rule: OrganizationContext4b
+Priority: 40
+// He and Mary
+(
+   {Token.string == "như"}
+)
+(
+   ({TempOrganization}):availableOrg
+   {Token.string == ","}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):org
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	//features.put("class", orgAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức");
+
+	features.put("kind", orgAnn.getFeatures().get("kind"));
+	features.put("rule", "OrganizationContext4b");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+
+

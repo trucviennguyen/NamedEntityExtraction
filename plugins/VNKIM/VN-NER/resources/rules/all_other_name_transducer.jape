@@ -1,0 +1,167 @@
+/*
+ *  all_other_name_transducer.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	All_Other_Name_Transducer
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Macro definitions
+// may use some macros form person_name.jape
+// if change the order - check this first!
+///////////////////////////////////////////////////////////////////
+
+
+Macro:  NLHTTN
+// Ngữ_liệu_Hiện_tượng_tự_nhiên
+(
+      {NLHTTN}
+)
+
+
+Macro:  NLBC
+// Ngữ_liệu_Biến_cố
+(
+      {NLBC}
+)
+
+
+///////////////////////////////////////////////////////////////////
+// Organization Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	Abstract_X
+// Hiện_tượng_tự_nhiên
+Priority: 145
+(
+   (NLHTTN):abstPre
+   (
+      (
+         (({NamedEntity} | {Np})+) (({Number})?)
+      ) |
+      (
+         (({NamedEntity} | {Np})*) {Number}
+      ) |
+      (
+         {Token.string == "số"} {Number}
+      )
+   ):abstPure
+)
+:abstName
+-->
+{
+	gate.AnnotationSet abstSet = (gate.AnnotationSet)bindings.get("abstName");
+	gate.Annotation abstAnn = (gate.Annotation)abstSet.iterator().next();
+
+	gate.AnnotationSet abstPre = (gate.AnnotationSet)bindings.get("abstPre");
+	gate.Annotation abstPreAnn = (gate.Annotation)abstPre.iterator().next();
+
+	gate.AnnotationSet abstPure = (gate.AnnotationSet)bindings.get("abstPure");
+	gate.Annotation abstPureAnn = (gate.Annotation)abstPure.iterator().next();
+
+	String clasPre = (String)abstPreAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", clasPre.substring(0, 46) + clasPre.substring(55));
+
+	// Remove all annotations inside
+	Long extendStart = abstSet.firstNode().getOffset();
+	Long extendEnd = abstSet.lastNode().getOffset();
+
+	gate.AnnotationSet tempSet;
+	java.util.HashSet remSet = null;
+
+	tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	remSet = new java.util.HashSet();
+
+	Iterator remIter = tempSet.iterator();
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") || ann.getType().equalsIgnoreCase("Split") 
+		|| (ann.getType().equalsIgnoreCase("Upper") && (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+		|| ann.getEndNode().getOffset().intValue() < extendEnd.intValue())))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	features.put("kind", "abstractPlus");
+	features.put("rule", "Abstract_X");
+	annotations.add(abstSet.firstNode(), abstSet.lastNode(), "TempAbstract",features);
+}
+
+
+
+Rule:	Event_X
+// Biến_cố
+Priority: 145
+(
+   (NLBC):eventPre
+   (
+      (
+         (({NamedEntity} | {Np})+) (({Number})?)
+      ) |
+      (
+         (({NamedEntity} | {Np})*) {Number}
+      ) |
+      (
+         {Token.string == "số"} {Number}
+      )
+   ):eventPure
+)
+:eventName
+-->
+{
+	gate.AnnotationSet eventSet = (gate.AnnotationSet)bindings.get("eventName");
+	gate.Annotation eventAnn = (gate.Annotation)eventSet.iterator().next();
+
+	gate.AnnotationSet eventPre = (gate.AnnotationSet)bindings.get("eventPre");
+	gate.Annotation eventPreAnn = (gate.Annotation)eventPre.iterator().next();
+
+	gate.AnnotationSet eventPure = (gate.AnnotationSet)bindings.get("eventPure");
+	gate.Annotation eventPureAnn = (gate.Annotation)eventPure.iterator().next();
+
+	String clasPre = (String)eventPreAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", clasPre.substring(0, 46) + clasPre.substring(55));
+
+	// Remove all annotations inside
+	Long extendStart = eventAnn.getStartNode().getOffset();
+	Long extendEnd = eventAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet;
+	java.util.HashSet remSet = null;
+
+	tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	remSet = new java.util.HashSet();
+
+	Iterator remIter = tempSet.iterator();
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") || ann.getType().equalsIgnoreCase("Split") 
+		|| (ann.getType().equalsIgnoreCase("Upper") && (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+		|| ann.getEndNode().getOffset().intValue() < extendEnd.intValue())))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	features.put("kind", "eventPlus");
+	features.put("rule", "Event_X");
+	annotations.add(eventSet.firstNode(), eventSet.lastNode(), "TempEvent",features);
+}
+

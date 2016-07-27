@@ -1,0 +1,79 @@
+/*
+ *  person_name_clear.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+///////////////////////////////////////////////////////////////////
+// Person Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempPerson có dạng thuộc tính inst (ie. có trong KB), 
+ * loại bỏ tất cả các chú giải TempLocation và TempOrganization trùng một phần
+ * và các chú giải TempPerson trùng toàn phần mà không có inst
+ *
+ * Đối với mỗi thực thể TempPerson không có thuộc tính inst (ie. không có trong KB), bổ sung feature: inst = null
+ */
+
+Phase:	Person_Name_Clear
+Input: TempPerson
+Options: control = brill debug = no
+
+Rule: Person_Name_Clear
+Priority: 40
+(
+   {TempPerson}
+)
+:person
+ -->
+{
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("person");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+	String inst = (String)personAnn.getFeatures().get("inst");
+
+	String pure = (String)personAnn.getFeatures().get("originalName");
+
+	if (inst != null && !inst.equals("null"))
+	{
+		Long extendStart = personAnn.getStartNode().getOffset();
+		Long extendEnd = personAnn.getEndNode().getOffset();
+
+		gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+		java.util.HashSet remSet = new java.util.HashSet();
+
+		Iterator iter = tempSet.iterator();
+		while (iter.hasNext())
+		{
+			Annotation ann = (Annotation)iter.next();
+			String inst1 = (String)ann.getFeatures().get("inst");
+
+			if (ann.getType().equalsIgnoreCase("NamedEntity") || ann.getType().equalsIgnoreCase("Np") 
+			|| ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split")
+			|| ann.getType().equalsIgnoreCase("Title") || ann.getType().equalsIgnoreCase("JobTitle"))
+				remSet.add(ann);
+			else if ((ann.getType().equalsIgnoreCase("TempLocation") || ann.getType().equalsIgnoreCase("TempOrganization"))
+			&& pure != null && ann.getEndNode().getOffset().intValue() + pure.length() == extendEnd.intValue() - 1)
+				remSet.add(ann);
+			else if (extendStart.intValue() == ann.getStartNode().getOffset().intValue() 
+			&& extendEnd.intValue() == ann.getEndNode().getOffset().intValue())
+			{
+				if (ann.getType().equalsIgnoreCase("TempPerson") && inst1 != null  && !inst1.equals("null") && !inst1.equals(inst))
+					remSet.add(ann);
+				else if (ann.getType().equalsIgnoreCase("TempLocation") || ann.getType().equalsIgnoreCase("TempOrganization"))
+					remSet.add(ann);
+			}
+		}
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+		annotations.add(personSet.firstNode(), personSet.lastNode(), "TempPerson", personAnn.getFeatures());
+	}
+	else personAnn.getFeatures().put("inst","null");
+}
+
+

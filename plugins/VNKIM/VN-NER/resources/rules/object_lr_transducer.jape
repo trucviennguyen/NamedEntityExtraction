@@ -1,0 +1,48 @@
+/*
+ *  object_lr_transducer.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Object_LR_Transducer
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+	LR_TempPerson LR_TempLocation LR_TempOrganization
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Macro definitions
+// may use some macros form person_name.jape
+// if change the order - check this first!
+///////////////////////////////////////////////////////////////////
+
+Macro:  NLDT
+// Ngữ liệu đối tượng
+(
+      {NLDT}
+)
+
+///////////////////////////////////////////////////////////////////
+// Location Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	LR_TempObject
+Priority: 145
+(
+   (NLDT)
+):objName
+({Token.orth == lowercase} | {Token.kind == punctuation})
+-->
+{
+	gate.AnnotationSet objSet = (gate.AnnotationSet)bindings.get("objName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_TempObject");
+	annotations.add(objSet.firstNode(), objSet.lastNode(), "LR_TempObject",features);
+}
+

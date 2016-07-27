@@ -1,0 +1,62 @@
+/* 
+ *  company_lexica.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Company_Lexica
+Input: Lookup
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Lexical resources of Company
+///////////////////////////////////////////////////////////////////
+
+Rule:  TTCT
+// Tiền tố công ty
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tiền_tố_công_ty"}
+):ttct
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("ttct");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "TTCT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "TTCT", features);
+}
+
+
+Rule:  LHCT
+// Loại hình công ty
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Loại_hình_công_ty"}
+):lhct
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lhct");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "LHCT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "LHCT", features);
+}
+
+Rule:  LHKD
+// Loại hình kinh doanh
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Loại_hình_kinh_doanh"}
+):lhkd
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lhkd");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "LHKD");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "LHKD", features);
+}
+

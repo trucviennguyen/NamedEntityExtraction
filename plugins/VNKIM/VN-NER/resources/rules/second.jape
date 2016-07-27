@@ -1,0 +1,318 @@
+Phase:	second
+Input: DEFAULT_TOKEN Lookup Sentence Split Token vnWord Number Pp Upper
+Options: control = appelt debug = no
+
+// this has to be run first of all
+// contains any macros etc needed only for standard grammars
+
+Rule:  Not_LR_1
+Priority: 100
+(
+   {Token.string == "Nhu"} |
+   {Token.string == "nhu"} |
+   {Token.string == "Yêu"} |
+   {Token.string == "yêu"}
+)
+({Token.string == "cầu"}):lr
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+
+	Long extendStart = lrAnn.getStartNode().getOffset();
+	Long extendEnd = lrAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+Rule:  Not_LR_2
+Priority: 100
+(
+   {Token.string == "Vì"} |
+   {Token.string == "vì"} |
+   {Token.string == "Tại"} |
+   {Token.string == "tại"}
+)
+({Token.string == "sao"}):lr
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+
+	Long extendStart = lrAnn.getStartNode().getOffset();
+	Long extendEnd = lrAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+Rule:  Not_LR_3
+Priority: 100
+(
+   {Token.string == "Phòng"} |
+   {Token.string == "phòng"}
+)
+(
+   ({Token.string == "Cảnh"} {Token.string == "Sát"}) |
+   ({Token.string == "Cảnh"} {Token.string == "sát"}) |
+   ({Token.string == "cảnh"} {Token.string == "Sát"}) |
+   ({Token.string == "cảnh"} {Token.string == "sát"})
+):lr
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+
+	Long extendStart = lrAnn.getStartNode().getOffset();
+	Long extendEnd = lrAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+Rule:  Not_LR_4
+Priority: 100
+(
+   {Token.string == "Ngã"} |
+   {Token.string == "ngã"}
+)
+(
+   {Token.string == "Ba"} |
+   {Token.string == "ba"}
+):lr
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+
+	Long extendStart = lrAnn.getStartNode().getOffset();
+	Long extendEnd = lrAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+Rule:  Not_LR_5
+Priority: 100
+(
+   {Token.string == "Lao"} |
+   {Token.string == "lao"}
+)
+(
+   {Token.string == "Động"} |
+   {Token.string == "động"}
+):lr
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+
+	Long extendStart = lrAnn.getStartNode().getOffset();
+	Long extendEnd = lrAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+Rule:  Not_NE_1
+Priority: 100
+
+{Split}
+(
+   (
+      {Token.kind == punctuation}
+   )*
+)
+(
+   {Token.string == "Sau"} |
+   {Token.string == "Trong"} |
+   {Token.string == "Các"}
+):ne
+-->
+{
+	gate.AnnotationSet neSet = (gate.AnnotationSet)bindings.get("ne");
+	gate.Annotation neAnn = (gate.Annotation)neSet.iterator().next();
+
+	Long extendStart = neAnn.getStartNode().getOffset();
+	Long extendEnd = neAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+Rule:  Not_NE_2
+Priority: 100
+(
+   {Token.string == "Khu"}
+):ne
+(
+   ({Token.string == "kinh"} {Token.string == "tế"})
+)
+-->
+{
+	gate.AnnotationSet neSet = (gate.AnnotationSet)bindings.get("ne");
+	gate.Annotation neAnn = (gate.Annotation)neSet.iterator().next();
+
+	Long extendStart = neAnn.getStartNode().getOffset();
+	Long extendEnd = neAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+Rule:  Not_NE_3
+Priority: 100
+(
+   (
+      {Token.string == "Phía"} |
+      {Token.string == "phía"}
+   )
+   (
+      ({Token.string == "Đông"} {Token.string == "Bắc"}) |
+      ({Token.string == "Đông"} {Token.string == "bắc"}) |
+      ({Token.string == "đông"} {Token.string == "Bắc"}) |
+      ({Token.string == "đông"} {Token.string == "bắc"}) |
+
+      ({Token.string == "Đông"} {Token.string == "Nam"}) |
+      ({Token.string == "Đông"} {Token.string == "nam"}) |
+      ({Token.string == "đông"} {Token.string == "Nam"}) |
+      ({Token.string == "đông"} {Token.string == "nam"}) |
+
+      ({Token.string == "Tây"} {Token.string == "Bắc"}) |
+      ({Token.string == "Tây"} {Token.string == "bắc"}) |
+      ({Token.string == "tây"} {Token.string == "Bắc"}) |
+      ({Token.string == "tây"} {Token.string == "bắc"}) |
+
+      ({Token.string == "Tây"} {Token.string == "Nam"}) |
+      ({Token.string == "Tây"} {Token.string == "nam"}) |
+      ({Token.string == "tây"} {Token.string == "Nam"}) |
+      ({Token.string == "tây"} {Token.string == "nam"}) |
+
+      {Token.string == "Đông"} | {Token.string == "đông"} |
+      {Token.string == "Tây"} | {Token.string == "tây"} |
+      {Token.string == "Nam"} | {Token.string == "nam"} |
+      {Token.string == "Bắc"} | {Token.string == "bắc"}
+   )
+):ne
+-->
+{
+	gate.AnnotationSet neSet = (gate.AnnotationSet)bindings.get("ne");
+	gate.Annotation neAnn = (gate.Annotation)neSet.iterator().next();
+
+	Long extendStart = neSet.firstNode().getOffset();
+	Long extendEnd = neSet.lastNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		String clas = (String)ann.getFeatures().get("class");
+		if (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thực_thể"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}

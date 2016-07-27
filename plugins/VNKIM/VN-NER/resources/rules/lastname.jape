@@ -1,0 +1,27 @@
+/*
+ *  lastname.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	LastName
+Input: Lookup
+Options: control = appelt
+
+Rule: LastName
+// Kennedy
+Priority: 100
+
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Họ_người"}
+):person
+-->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String theclas = (String)personAnn.getFeatures().get("class");
+	features.put("rule", "LastName");
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Họ_người");
+	annotations.add(person.firstNode(), person.lastNode(), "LastPerson", features);
+}
+

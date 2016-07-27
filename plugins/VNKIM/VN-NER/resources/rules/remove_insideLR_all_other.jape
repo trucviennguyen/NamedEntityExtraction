@@ -1,0 +1,95 @@
+/*
+ *  remove_insideLR_all_other.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Remove_InsideLR_All_Other
+Input: LR_Abstract LR_Event
+Options: control = brill debug = no
+
+
+///////////////////////////////////////////////////////////////////
+// Person Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempAbstract có dạng đầy đủ (vd. có tiền tố công ty hay loại hình công ty), 
+ * loại bỏ tất cả các chú giải TempPerson và TempPerson trùng một phần hay toàn phần
+ */
+
+Rule:	Remove_InsideLR_Abstract
+Priority: 145
+(
+   {LR_TempAbstract}
+)
+:abstName
+-->
+{
+	gate.AnnotationSet abstSet = (gate.AnnotationSet)bindings.get("abstName");
+	gate.Annotation abstAnn = (gate.Annotation)abstSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = abstAnn.getStartNode().getOffset();
+	Long extendEnd = abstAnn.getEndNode().getOffset();
+
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		Long extendStart1 = ann.getStartNode().getOffset();
+		Long extendEnd1 = ann.getEndNode().getOffset();
+
+		if (ann.getType().equalsIgnoreCase("TempPerson") ||
+		ann.getType().equalsIgnoreCase("TempLocation") || ann.getType().equalsIgnoreCase("TempOrganization"))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+/* Đối với mỗi thực thể TempAbstract có dạng đầy đủ (vd. có tiền tố công ty hay loại hình công ty), 
+ * loại bỏ tất cả các chú giải TempPerson và TempPerson trùng một phần hay toàn phần
+ */
+
+Rule:	Remove_InsideLR_Event
+Priority: 145
+(
+   {LR_TempEvent}
+)
+:eventName
+-->
+{
+	gate.AnnotationSet eventSet = (gate.AnnotationSet)bindings.get("eventName");
+	gate.Annotation eventAnn = (gate.Annotation)eventSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = eventAnn.getStartNode().getOffset();
+	Long extendEnd = eventAnn.getEndNode().getOffset();
+
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		Long extendStart1 = ann.getStartNode().getOffset();
+		Long extendEnd1 = ann.getEndNode().getOffset();
+
+		if (ann.getType().equalsIgnoreCase("TempPerson") ||
+		ann.getType().equalsIgnoreCase("TempLocation") || ann.getType().equalsIgnoreCase("TempOrganization"))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+

@@ -1,0 +1,263 @@
+/*
+ *  clear_NLTCNN.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Clear_NLTCNN
+Input: NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK NLUBND NLVNC
+Options: control = brill debug = no
+
+Rule: Remove_NLBCQNB
+(
+   {NLBCQNB}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLCLBBD
+(
+   {NLCLBBD}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLCLBTT
+(
+   {NLCLBTT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLCNPBK
+(
+   {NLCNPBK}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLCQTP
+(
+   {NLCQTP}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLDCT
+(
+   {NLDCT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLDN
+(
+   {NLDN}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLHDND
+(
+   {NLHDND}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+
+Rule: Remove_NLLDTT
+(
+   {NLLDTT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLNOICAC
+(
+   {NLNOICAC}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+            
+Rule: Remove_NLQH
+(
+   {NLQH}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLSO
+(
+   {NLSO}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTCNN
+(
+   {NLTCNN}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTCQT
+(
+   {NLTCQT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTCTT
+(
+   {NLTCTT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTCTG
+(
+   {NLTCTG}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTCXH
+(
+   {NLTCXH}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTRT
+(
+   {NLTRT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLTTGDCK
+(
+   {NLTTGDCK}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLUBND
+(
+   {NLUBND}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+
+Rule: Remove_NLVNC
+(
+   {NLVNC}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}

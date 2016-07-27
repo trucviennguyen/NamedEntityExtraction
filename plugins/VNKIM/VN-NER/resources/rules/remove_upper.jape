@@ -1,0 +1,75 @@
+Phase:	remove_upper
+Input: Np NotNp
+Options: control = appelt debug = no
+
+// this has to be run after first.jape
+/* 1.danh từ riêng
+ * Việt Nam, TPHCM, Trần Quang Khải
+ */
+MACRO:  Np
+(
+   {Np}
+)
+
+
+/* 2.danh từ đơn thể
+ * sự vật có thể tồn tại thành đơn thể
+ * nhà, trâu, áo, xe, người, ruộng
+ */
+MACRO:  NotNp
+(
+   {NotNp}
+)
+
+// this has to be run first of all
+// contains any macros etc needed only for standard grammars
+
+Rule: NotProper
+Priority: 50
+(
+   (NotNp)
+):word
+-->
+{
+	gate.AnnotationSet word = (gate.AnnotationSet)bindings.get("word");
+	gate.Annotation wordAnn = (gate.Annotation)word.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	String pure = null;
+	try {
+		pure = doc.getContent().toString().substring(word.firstNode().getOffset().intValue(),
+						word.lastNode().getOffset().intValue());
+	}
+	catch (Exception ex) {
+		pure = null;
+	}
+	if(pure != null) features.put("string", pure);
+
+	Long extendStart = wordAnn.getStartNode().getOffset();
+	Long extendEnd = wordAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	Iterator iter = tempSet.iterator();
+	while (iter.hasNext())
+	{
+		Annotation ann = (Annotation)iter.next();
+		String clas = (String)ann.getFeatures().get("class");
+		if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+		|| ann.getType().equalsIgnoreCase("Split") || ann.getType().equalsIgnoreCase("Upper")
+		|| vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu")
+		|| vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Họ_người")
+		|| vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tên_người"))
+			remSet.add(ann);
+	}
+
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	features.put("rule", "NotProper");
+	annotations.add(word.firstNode(), word.lastNode(), "NotProper",features);
+}
+
+
+

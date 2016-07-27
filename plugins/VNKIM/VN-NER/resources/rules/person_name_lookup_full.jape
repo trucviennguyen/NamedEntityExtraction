@@ -1,0 +1,69 @@
+/*
+ *  person_name__lookup_full.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+Phase:	Person_Name_Lookup_Full
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////////
+// MACRO definition
+/////////////////////////////////////////////////////////////////
+
+Macro: TITLE
+(
+   (  {Title}
+      ({Title})?
+   ) |
+   (  {Title}
+      ({JobTitle})?
+   ) |
+   ({JobTitle})
+)
+
+
+///////////////////////////////////////////////////////////
+// Person Rules
+
+Rule:	PersonTitle
+Priority: 30
+(
+   (TITLE) :title
+   ({TempPerson}):personPure
+):person
+-->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+	gate.AnnotationSet personPure = (gate.AnnotationSet)bindings.get("personPure");
+	gate.Annotation personPureAnn = (gate.Annotation)personPure.iterator().next();
+
+	gate.FeatureMap features = null;
+	features = personPureAnn.getFeatures();
+
+	String pure = doc.getContent().toString().substring(personPure.firstNode().getOffset().intValue(), personPure.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	String gender = null;
+	gate.AnnotationSet title = (gate.AnnotationSet)bindings.get("title");
+	if (title != null && title.size()>0)
+	{
+		gate.Annotation titleAnn = (gate.Annotation)title.iterator().next();
+	 	if (titleAnn != null)  gender = (String) titleAnn.getFeatures().get("gender");
+	}
+	if (gender == null) gender = (String) personPureAnn.getFeatures().get("gender");
+	if (gender != null) features.put("gender",gender);
+
+	features.put("kind", "personPlus");
+	features.put("rule", "PersonTitle");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson", features);
+}
+

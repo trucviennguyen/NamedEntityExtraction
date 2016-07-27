@@ -1,0 +1,558 @@
+// ChauNguyen 11/06/2005
+// $id$
+
+Phase:postprocess
+Input: vnWord SpaceToken
+Options: control = appelt
+
+//------- ChauNguyen starts adding ------
+Rule: PN
+ (({vnWord.orth=="upperInitial"})(({SpaceToken})+({vnWord.orth=="upperInitial"}|{vnWord.orth=="Np"})+)+)+ :PN
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("PN");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+  annotations.removeAll(toNew);
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Np");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+/*
+Rule: NP3
+ // (({vnWord.kind=="word"})((({SpaceToken})*{vnWord.string=="-"}({SpaceToken})*){vnWord.kind=="word"})+)+  :np3
+ (({vnWord.orth=="Np"})((({SpaceToken})*{vnWord.string=="-"}({SpaceToken})*){vnWord.orth=="Np"})+)+  :np3
+-->
+{
+  gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("np3");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+ 
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+   String text = "";
+    Iterator tokIter = tokens.iterator();
+    gate.Annotation firstToken = (gate.Annotation)tokIter.next();
+
+    String firstTokenText = (String)firstToken.getFeatures().get("string");
+   
+    if(!firstTokenText.matches(":")&&!firstTokenText.matches("."))
+       {
+                    
+        annotations.removeAll(toNew);
+        String ntext = firstTokenText;
+                            
+        while(tokIter.hasNext())
+       ntext += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+       gate.FeatureMap features = Factory.newFeatureMap();
+       features.put("kind", "word");
+       features.put("string", ntext);
+       features.put("length", Integer.toString(ntext.length()));
+       features.put("orth", "Np");
+       annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+     }
+  }
+*/
+Rule: PP1
+ ({vnWord.string=="Anh"}|{vnWord.string=="anh"}|{vnWord.string=="Bạn"}|{vnWord.string=="bạn"}|{vnWord.string=="Em"}|{vnWord.string=="em"}|{vnWord.string=="Tôi"}|{vnWord.string=="Chị"}|{vnWord.string=="chị"}|{vnWord.string=="Cô"}|{vnWord.string=="cô"}|{vnWord.string=="Ông"}|{vnWord.string=="ông"}|{vnWord.string=="Bà"}|{vnWord.string=="bà"}|{vnWord.string=="Bác"}|{vnWord.string=="bác"}|{vnWord.string=="Thầy"}|{vnWord.string=="thầy"}) :pp1
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("pp1");
+ //get the tokens
+   java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+ 
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+    Iterator tokIter = tokens.iterator();
+    gate.Annotation firstToken = (gate.Annotation)tokIter.next();
+
+    String firstTokenText = (String)firstToken.getFeatures().get("orth");
+   
+    if(!firstTokenText.matches("Nt"))
+       {
+          annotations.removeAll(toNew);
+     
+        String ntext = (String)firstToken.getFeatures().get("string");
+
+       gate.FeatureMap features = Factory.newFeatureMap();
+       features.put("kind", "word");
+       features.put("string", ntext);
+       features.put("length", Integer.toString(ntext.length()));
+       features.put("orth", "Pp");
+       annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+     }
+}
+Rule: CC
+ ({vnWord.string=="và"}|{vnWord.string=="hay"}|{vnWord.string=="hoặc"}|{vnWord.string=="với"}|{vnWord.string=="cùng"}|{vnWord.string=="rồi"}|{vnWord.string=="còn"}|{vnWord.string=="thì"}|{vnWord.string=="cũng như"}|{vnWord.string=="chứ"}|{vnWord.string=="do"}|{vnWord.string=="của"}|{vnWord.string=="để"}|{vnWord.string=="bởi"}|{vnWord.string=="bởi"}|{vnWord.string=="bởi vì"}|{vnWord.string=="tại"}|{vnWord.string=="tại vì"}|{vnWord.string=="mà"}) :cc1
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("cc1");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+  annotations.removeAll(toNew);
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Cc");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vla
+ ({vnWord.string=="là"}) :Vla
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vla");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vla");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vt
+ ({vnWord.string=="ăn"}|{vnWord.string=="ở"}|{vnWord.string=="thiết kế"}|{vnWord.string=="làm"}|{vnWord.string=="cho"}|{vnWord.string=="lấy"}|{vnWord.string=="viết"}|{vnWord.string=="đọc"}|{vnWord.string=="xây dựng"}|{vnWord.string=="cải tiến"}) :Vt
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vt");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vt");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vit
+ ({vnWord.string=="ngủ"}|{vnWord.string=="tắm"}|{vnWord.string=="cười"}|{vnWord.string=="chạy"}|{vnWord.string=="bay"}|{vnWord.string=="làm lụng"}|{vnWord.string=="nghỉ ngơi"}) :Vit
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vit");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vit");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vim
+ ({vnWord.string=="nghe"}|{vnWord.string=="biết"}|{vnWord.string=="yêu"}|{vnWord.string=="nhớ"}|{vnWord.string=="nghi ngờ"}|{vnWord.string=="ghét"}|{vnWord.string=="quên"}) :Vim
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vim");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vim");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vo
+ ({vnWord.string=="ra"}|{vnWord.string=="vào"}|{vnWord.string=="lên"}|{vnWord.string=="xuống"}|{vnWord.string=="đi"}|{vnWord.string=="chạy"}|{vnWord.string=="sản xuất"}|{vnWord.string=="qua"}) :Vo
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vo");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vo");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vs
+ ({vnWord.string=="có"}|{vnWord.string=="còn"}|{vnWord.string=="hết"}|{vnWord.string=="mất"}) :Vs
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vs");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vs");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vb
+ ({vnWord.string=="hóa"}|{vnWord.string=="tránh"}|{vnWord.string=="nên"}|{vnWord.string=="trở thành"}|{vnWord.string=="trở nên"}) :Vb
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vb");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vb");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vv
+ ({vnWord.string=="muốn"}|{vnWord.string=="quyết"}|{vnWord.string=="dám"}|{vnWord.string=="toan"}|{vnWord.string=="định"}) :Vv
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vv");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vv");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Va
+ ({vnWord.string=="bị"}|{vnWord.string=="phải"}|{vnWord.string=="chịu"}|{vnWord.string=="được"}) :Va
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Va");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Va");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Vc
+ ({vnWord.string=="bằng"}|{vnWord.string=="thua"}|{vnWord.string=="kém"}|{vnWord.string=="hơn"}) :Vc
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Vc");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Vc");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Nl
+ ({vnWord.string=="tại"}|{vnWord.string=="trong"}|{vnWord.string=="trên"}|{vnWord.string=="dưới"}|{vnWord.string=="ngoài"}|{vnWord.string=="sau"}|{vnWord.string=="trước"}) :Nl
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Nl");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Nl");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Nn
+ ({vnWord.string=="một"}|{vnWord.string=="hai"}|{vnWord.string=="ba"}|{vnWord.string=="bốn"}|{vnWord.string=="năm"}|{vnWord.string=="sáu"}|{vnWord.string=="bảy"}|{vnWord.string=="tám"}|{vnWord.string=="chín"}|{vnWord.string=="muời"}|{vnWord.string=="một trăm"}|{vnWord.string=="một ngàn"}|{vnWord.string=="một triệu"}|{vnWord.string=="một tỷ"}|{vnWord.string=="những"}|{vnWord.string=="các"}|{vnWord.string=="vài"}|{vnWord.string=="mấy"}|{vnWord.string=="tất cả"}|{vnWord.string=="số đông"}|{vnWord.string=="phần lớn"}|{vnWord.string=="Một"}|{vnWord.string=="Hai"}|{vnWord.string=="Ba"}|{vnWord.string=="Bốn"}|{vnWord.string=="Năm"}|{vnWord.string=="Sáu"}|{vnWord.string=="Bảy"}|{vnWord.string=="Tám"}|{vnWord.string=="Chín"}|{vnWord.string=="Muời"}|{vnWord.string=="Một trăm"}|{vnWord.string=="Một ngàn"}|{vnWord.string=="Một triệu"}|{vnWord.string=="Một tỷ"}|{vnWord.string=="Những"}|{vnWord.string=="Các"}|{vnWord.string=="Vài"}|{vnWord.string=="Mấy"}|{vnWord.string=="Tất cả"}|{vnWord.string=="Số đông"}|{vnWord.string=="Phần lớn"}) :Nn
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Nn");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Nn");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Nu
+ ({vnWord.string=="lít"}|{vnWord.string=="mẫu"}|{vnWord.string=="cân"}|{vnWord.string=="tạ"}|{vnWord.string=="tấn"}|{vnWord.string=="kg"}|{vnWord.string=="sào"}|{vnWord.string=="cái"}|{vnWord.string=="mảng"}|{vnWord.string=="mảnh"}|{vnWord.string=="miếng"}|{vnWord.string=="tấm"}|{vnWord.string=="Lít"}|{vnWord.string=="Mẫu"}|{vnWord.string=="Cân"}|{vnWord.string=="Tạ"}|{vnWord.string=="Tấn"}|{vnWord.string=="Kg"}|{vnWord.string=="Sào"}|{vnWord.string=="Cái"}|{vnWord.string=="Mảng"}|{vnWord.string=="Mảnh"}|{vnWord.string=="Miếng"}|{vnWord.string=="Tấm"}) :Nu
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Nu");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Nu");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Aa
+ ({vnWord.string=="tốt"}|{vnWord.string=="đẹp"}|{vnWord.string=="giỏi"}|{vnWord.string=="xấu"}|{vnWord.string=="ngoan"}|{vnWord.string=="thông minh"}|{vnWord.string=="khôn"}|{vnWord.string=="khôn ngoan"}|{vnWord.string=="lanh"}|{vnWord.string=="lanh lợi"}|{vnWord.string=="tích cực"}|{vnWord.string=="cần thiết"}|{vnWord.string=="không cần thiết"}|{vnWord.string=="trong sạch"}|{vnWord.string=="bẩn"}|{vnWord.string=="ngu"}|{vnWord.string=="ngu xuẩn"}) :Aa
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Aa");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Aa");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: An
+ ({vnWord.string=="cao"}|{vnWord.string=="thấp"}|{vnWord.string=="ngắn"}|{vnWord.string=="dài"}|{vnWord.string=="rộng"}|{vnWord.string=="hẹp"}|{vnWord.string=="gần"}|{vnWord.string=="xa"}|{vnWord.string=="nông"}|{vnWord.string=="sâu"}|{vnWord.string=="cạn"}|{vnWord.string=="to"}|{vnWord.string=="lớn"}|{vnWord.string=="mập"}|{vnWord.string=="vừa và nhỏ"}|{vnWord.string=="nhỏ"}|{vnWord.string=="ốm"}) :An
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("An");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "An");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Jd
+ ({vnWord.string=="rất"}|{vnWord.string=="khá"}|{vnWord.string=="hơi"}|{vnWord.string=="quá"}|{vnWord.string=="lắm"}|{vnWord.string=="thật"}|{vnWord.string=="hết sức"}|{vnWord.string=="cực"}|{vnWord.string=="tuyệt đối"}|{vnWord.string=="hoàn toàn"}|{vnWord.string=="hầu hết"}) :Jd
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Jd");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Jd");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Jr
+ ({vnWord.string=="cũng"}|{vnWord.string=="đều"}|{vnWord.string=="vẫn"}|{vnWord.string=="cứ"}|{vnWord.string=="còn"}|{vnWord.string=="mãi"}|{vnWord.string=="mãi mãi"}|{vnWord.string=="luôn"}|{vnWord.string=="luôn luôn"}|{vnWord.string=="liên tục"}|{vnWord.string=="liên tiếp"}|{vnWord.string=="không ngừng"}) :Jr
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Jr");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Jr");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Ja
+ ({vnWord.string=="không"}|{vnWord.string=="chẳng"}|{vnWord.string=="chưa"}) :Ja
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Ja");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Ja");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Ji
+ ({vnWord.string=="hãy"}|{vnWord.string=="chớ"}|{vnWord.string=="đừng"}|{vnWord.string=="nên"}|{vnWord.string=="phải"}|{vnWord.string=="cần"}) :Ji
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Ji");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Ji");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Jt ({vnWord.string=="đã"}|{vnWord.string=="sẽ"}|{vnWord.string=="đang"}|{vnWord.string=="vừa"}|{vnWord.string=="mới"}|{vnWord.string=="sắp"}|{vnWord.string=="từng"}|{vnWord.string=="liền"}|{vnWord.string=="rồi"}) :Jt
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("Jt");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  annotations.removeAll(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Jt");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+//------- ChauNguyen stops adding ------
+

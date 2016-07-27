@@ -1,0 +1,80 @@
+/*
+ *  location_name_final.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Location_Name_Final
+Input: TempLocation
+Options: control = brill debug = no
+
+Rule: LocationFinal
+Priority: 40
+(
+   {TempLocation}
+)
+:loc
+ -->
+{
+	gate.AnnotationSet locSet = (gate.AnnotationSet)bindings.get("loc");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation locAnn = (gate.Annotation)locSet.iterator().next();
+
+	String clas = (String)locAnn.getFeatures().get("class");
+	String rule = (String)locAnn.getFeatures().get("rule");
+	boolean Ok = true;
+
+	String st = doc.getContent().toString().substring(locSet.firstNode().getOffset().intValue(), locSet.lastNode().getOffset().intValue());
+
+	if (st.length() == 1)
+		Ok = false;
+	else if (rule.equals("RawLocation")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Dãy_núi")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Di_tích_nhà_thờ")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Đơn_vị_hành_chính_cấp_hai")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Đơn_vị_hành_chính_cấp_một")
+	&& !(clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Quận") && st.charAt(0) == 'Q')
+	&& !(clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Phường") && st.charAt(0) == 'P')
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Quốc_gia")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thành_phố")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thành_phố_cấp_hai")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thành_phố_cấp_một")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thủ_đô")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Vùng_địa_lý_lớn")
+	&& !clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Vùng_đông_dân_cư"))
+	{
+		int i = 0;		
+		for (i = 0; i < st.length() && !java.lang.Character.isWhitespace(st.charAt(i)); i++);
+		if (i == st.length())
+		{
+			i = 0;
+			int nbrUpper = 0;
+			int nbrLower = 0;
+			while (i < st.length())
+			{
+				if (java.lang.Character.isUpperCase(st.charAt(i))) nbrUpper++;
+				else if (java.lang.Character.isLowerCase(st.charAt(i))) nbrLower++;
+				i++;
+			}
+			if (((nbrUpper + nbrLower == st.length()) && nbrUpper < nbrLower)
+			|| (nbrLower > st.length() - nbrUpper - nbrLower))
+			{
+				annotations.remove(locAnn);
+				Ok = false;
+			}
+		}
+	}
+
+	if (Ok)
+	{
+		gate.FeatureMap features = locAnn.getFeatures();
+
+		features.put("rule", "LocationFinal");
+		annotations.add(locSet.firstNode(), locSet.lastNode(), "Nơi_chốn", features);
+	}
+}
+
+

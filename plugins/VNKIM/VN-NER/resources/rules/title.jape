@@ -1,0 +1,34 @@
+/*
+ *  title.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Title
+Input: Lookup
+Options: control = appelt
+Rule: TitleGender
+Priority: 50
+// Mr
+
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Chức_danh"}
+):title
+-->
+{
+	gate.AnnotationSet title = (gate.AnnotationSet)bindings.get("title");
+	gate.Annotation titleAnn = (gate.Annotation)title.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String) titleAnn.getFeatures().get("class");
+	features.put("class", clas);
+	if (clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Chức_danh_nam")) {
+		features.put("gender", "male");
+	}
+	else if (clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Chức_danh_nữ")){
+		features.put("gender", "female");
+	}
+	features.put("rule", "TitleGender");
+
+	// add new Title annotation
+	annotations.add(title.firstNode(), title.lastNode(), "Title", features);
+}
+

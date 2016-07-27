@@ -1,0 +1,416 @@
+/*
+ *  other_organization_lr_transducer.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Other_Organization_LR_Transducer
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+	LR_TempPerson LR_TempLocation
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Macro definitions
+// may use some macros form person_name.jape
+// if change the order - check this first!
+///////////////////////////////////////////////////////////////////
+
+Macro:  NLBCQNB
+// Ngữ_liệu_Bộ_và_cơ_quan_ngang_bộ
+(
+      {NLBCQNB}
+)
+
+
+Macro:  NLDCT
+// Ngữ_liệu_Đảng_chính_trị
+(
+      {NLDCT}
+)
+
+
+Macro:  NLNOICAC
+// Ngữ_liệu_Nội_các
+(
+      {NLNOICAC}
+)
+
+
+Macro:  NLCLBBD
+// Ngữ_liệu_Câu_lạc_bộ_bóng_đá
+(
+      {NLCLBBD}
+)
+
+
+Macro:  NLCLBTT
+// Ngữ_liệu_Câu_lạc_bộ_thể_thao
+(
+      {NLCLBTT}
+)
+
+
+Macro:  NLCNPBK
+// Ngữ_liệu_Chi_nhánh_Phòng_Ban_Khoa
+(
+      {NLCNPBK}
+)
+
+
+Macro:  NLCQTP
+// Ngữ_liệu_Cơ_quan_tư_pháp
+(
+      {NLCQTP}
+)
+
+
+Macro:  NLDN
+// Ngữ_liệu_Đội_nhóm
+(
+      {NLDN}
+)
+
+
+Macro:  NLHDND
+// Ngữ_liệu_Hội_đồng_nhân_dân
+(
+      {NLHDND}
+)
+
+
+Macro:  NLLDTT
+// Ngữ_liệu_Liên_đoàn_thể_thao
+(
+      {NLLDTT}
+)
+
+
+Macro:  NLQH
+// Ngữ_liệu_Quốc_hội
+(
+      {NLQH}
+)
+
+
+Macro:  NLSO
+// Ngữ_liệu_Sở
+(
+      {NLSO}
+)
+
+
+Macro:  NLTCNC
+// Ngữ_liệu_Tổ_chức_nghiên_cứu
+(
+      {NLTCNC}
+)
+
+
+Macro:  NLTCNN
+// Ngữ_liệu_Tổ_chức_nhà_nước
+(
+      {NLTCNN}
+)
+
+
+Macro:  NLTCQT
+// Ngữ_liệu_Tổ_chức_quốc_tế
+(
+      {NLTCQT}
+)
+
+
+Macro:  NLTCTT
+// Ngữ_liệu_Tổ_chức_thể_thao
+(
+      {NLTCTT}
+)
+
+
+Macro:  NLTCTG
+// Ngữ_liệu_Tổ_chức_tôn_giáo
+(
+      {NLTCTG}
+)
+
+
+Macro:  NLTCXH
+// Ngữ_liệu_Tổ_chức_xã_hội
+(
+      {NLTCXH}
+)
+
+
+Macro:  NLTRT
+// Ngữ_liệu_Trung_tâm
+(
+      {NLTRT}
+)
+
+
+Macro:  NLTTGDCK
+// Ngữ_liệu_Trung_tâm_giao_dịch_chứng_khoán
+(
+      {NLTTGDCK}
+)
+ 
+
+Macro:  NLUBND
+// Ngữ_liệu_Ủy_ban_nhân_dân
+(
+      {NLUBND}
+)
+
+
+Macro:  NLVNC
+// Ngữ_liệu_Viện_nghiên_cứu
+(
+      {NLVNC}
+)
+
+///////////////////////////////////////////////////////////////////
+// Organization Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	LR_NLBCQNB_OrgX
+// Ngữ_liệu_Bộ_và_cơ_quan_ngang_bộ
+Priority: 145
+(NLBCQNB):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLBCQNB_OrgX}
+
+
+Rule:	LR_NLDCT_OrgX
+// Ngữ_liệu_Đảng_chính_trị
+Priority: 145
+(NLDCT):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLDCT_OrgX}
+
+
+Rule:	LR_NLNOICAC_OrgX
+// Ngữ_liệu_Nội_các
+Priority: 145
+(NLNOICAC):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLNOICAC_OrgX}
+
+
+Rule:	LR_NLCLBBD_OrgX
+// Ngữ_liệu_Câu_lạc_bộ_bóng_đá
+Priority: 145
+(NLCLBBD):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLCLBBD_OrgX}
+
+
+Rule:	LR_NLCLBTT_OrgX
+// Ngữ_liệu_Câu_lạc_bộ_thể_thao
+Priority: 145
+(NLCLBTT):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLCLBTT_OrgX}
+
+
+
+Rule:	LR_NLCNPBK_OrgX
+// Ngữ_liệu_Chi_nhánh_Phòng_Ban_Khoa
+Priority: 145
+(NLCNPBK):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLCNPBK_OrgX}
+
+
+
+Rule:	LR_NLCQTP_OrgX
+// Ngữ_liệu_Cơ_quan_tư_pháp
+Priority: 145
+(NLCQTP):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLCQTP_OrgX}
+
+
+
+Rule:	LR_NLDN_OrgX
+// Ngữ_liệu_Đội_nhóm
+Priority: 145
+(NLDN):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLDN_OrgX}
+
+
+
+Rule:	LR_NLHDND_OrgX
+// Ngữ_liệu_Hội_đồng_nhân_dân
+Priority: 145
+(NLHDND):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLHDND_OrgX}
+
+
+
+Rule:	LR_NLLDTT_OrgX
+// Ngữ_liệu_Liên_đoàn_thể_thao
+Priority: 145
+(NLLDTT):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLLDTT_OrgX}
+
+
+
+Rule:	LR_NLQH_OrgX
+// Ngữ_liệu_Quốc_hội
+Priority: 145
+(NLQH):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLQH_OrgX}
+
+
+
+Rule:	LR_NLSO_OrgX
+// Ngữ_liệu_Sở
+Priority: 145
+(NLSO):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLSO_OrgX}
+
+
+
+Rule:	LR_NLTCNC_OrgX
+// Ngữ_liệu_Tổ_chức_nghiên_cứu
+Priority: 145
+(NLTCNC):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTCNC_OrgX}
+
+
+
+Rule:	LR_NLTCNN_OrgX
+// Ngữ_liệu_Tổ_chức_nhà_nước
+Priority: 145
+(NLTCNN):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTCNN_OrgX}
+
+
+
+Rule:	LR_NLTCQT_OrgX
+// Ngữ_liệu_Tổ_chức_quốc_tế
+Priority: 145
+(NLTCQT):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTCQT_OrgX}
+
+
+
+Rule:	LR_NLTCTT_OrgX
+// Ngữ_liệu_Tổ_chức_thể_thao
+Priority: 145
+(NLTCTT):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTCTT_OrgX}
+
+
+
+Rule:	LR_NLTCTG_OrgX
+// Ngữ_liệu_Tổ_chức_tôn_giáo
+Priority: 145
+(NLTCTG):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTCTG_OrgX}
+
+
+
+Rule:	LR_NLTCXH_OrgX
+// Ngữ_liệu_Tổ_chức_xã_hội
+Priority: 145
+(NLTCXH):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTCXH_OrgX}
+
+
+
+Rule:	LR_NLTRT_OrgX
+// Ngữ_liệu_Trung_tâm
+Priority: 145
+(NLTRT):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTRT_OrgX}
+
+
+
+Rule:	LR_NLTTGDCK_OrgX
+// Ngữ_liệu_Trung_tâm_giao_dịch_chứng_khoán
+Priority: 145
+(NLTTGDCK):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLTTGDCK_OrgX}
+
+ 
+
+Rule:	LR_NLUBND_OrgX
+// Ngữ_liệu_Ủy_ban_nhân_dân
+Priority: 145
+(NLUBND):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLUBND_OrgX}
+
+
+Rule:	LR_NLVNC_OrgX
+// Ngữ_liệu_Viện_nghiên_cứu
+Priority: 145
+(NLVNC):lr
+{Token.orth == lowercase}
+{Token.orth == lowercase}
+-->
+:lr.LR_TempOrganization = {rule = LR_NLVNC_OrgX}
+

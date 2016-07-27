@@ -1,0 +1,58 @@
+/*
+ *  object_lexica.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Object_Lexica
+Input: Lookup
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////////////
+// Location Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:  NLDT
+// Ngữ liệu đối tượng
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Đối_tượng"}
+):nlnc
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("nlnc");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+
+	if (clas.endsWith("Ngữ_liệu_Đối_tượng"))
+	{
+		features.put("class", clas);
+
+		// Remove all annotations inside
+		Long extendStart = lrAnn.getStartNode().getOffset();
+		Long extendEnd = lrAnn.getEndNode().getOffset();
+
+		gate.AnnotationSet tempSet;
+		java.util.HashSet remSet = null;
+
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+		remSet = new java.util.HashSet();
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split") || (ann.getType().equalsIgnoreCase("Upper") 
+			&& (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+			|| ann.getEndNode().getOffset().intValue() < extendEnd.intValue())))
+				remSet.add(ann);
+		}
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+		features.put("rule", "NLDT");
+		annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLDT", features);
+	}
+}
+
+

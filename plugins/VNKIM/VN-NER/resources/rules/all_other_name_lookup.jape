@@ -1,0 +1,102 @@
+/*
+ *  All_other_name_lookup.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	All_Other_Name_Lookup
+Input: Lookup
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////
+// Abstract Rules
+
+Rule:	GazAbstract
+Priority: 1000
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Trừu_tượng"}
+)
+:abst
+ -->
+{
+	gate.AnnotationSet abst = (gate.AnnotationSet)bindings.get("abst");
+	gate.Annotation abstAnn = (gate.Annotation)abst.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", abstAnn.getFeatures().get("class"));
+	features.put("gender", abstAnn.getFeatures().get("gender"));
+	String inst =(String) abstAnn.getFeatures().get("inst");
+	if (inst!=null) features.put("inst",inst);
+
+	// Remove all annotations inside
+	Long extendStart = abstAnn.getStartNode().getOffset();
+	Long extendEnd = abstAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet;
+	java.util.HashSet remSet = null;
+
+	tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	remSet = new java.util.HashSet();
+
+	Iterator remIter = tempSet.iterator();
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") || ann.getType().equalsIgnoreCase("Split") 
+		|| (ann.getType().equalsIgnoreCase("Upper") && (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+		|| ann.getEndNode().getOffset().intValue() < extendEnd.intValue())))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+
+	features.put("kind", "abstractName");
+	features.put("rule", "GazAbstract");
+	annotations.add(abst.firstNode(), abst.lastNode(), "TempAbstract", features);
+}
+
+
+///////////////////////////////////////////////////////////
+// Event Rules
+
+Rule:	GazEvent
+Priority: 1000
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Sự_kiện"}
+)
+:event
+ -->
+{
+	gate.AnnotationSet event = (gate.AnnotationSet)bindings.get("event");
+	gate.Annotation eventAnn = (gate.Annotation)event.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", eventAnn.getFeatures().get("class"));
+	features.put("gender", eventAnn.getFeatures().get("gender"));
+	String inst =(String) eventAnn.getFeatures().get("inst");
+	if (inst!=null) features.put("inst",inst);
+
+	// Remove all annotations inside
+	Long extendStart = eventAnn.getStartNode().getOffset();
+	Long extendEnd = eventAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet;
+	java.util.HashSet remSet = null;
+
+	tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	remSet = new java.util.HashSet();
+
+	Iterator remIter = tempSet.iterator();
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") || ann.getType().equalsIgnoreCase("Split") 
+		|| (ann.getType().equalsIgnoreCase("Upper") && (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+		|| ann.getEndNode().getOffset().intValue() < extendEnd.intValue())))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	features.put("kind", "eventName");
+	features.put("rule", "GazEvent");
+	annotations.add(event.firstNode(), event.lastNode(), "TempEvent", features);
+}

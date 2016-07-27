@@ -1,0 +1,83 @@
+/*
+ *  other_organization_name_ex.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Other_Organization_Name_Ex
+Input: 	Sentence Split Token Number Pp Np TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLDT
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////
+// Organization Rules
+
+
+Rule: Organization_Complex
+Priority: 40
+(
+   ({TempOrganization}):preOrg
+   {TempOrganization}
+):org
+ -->
+{
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.Annotation orgAnn = (gate.Annotation)org.iterator().next();
+
+	gate.AnnotationSet preOrg = (gate.AnnotationSet)bindings.get("preOrg");
+	gate.Annotation preOrgAnn = (gate.Annotation)preOrg.iterator().next();
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", preOrgAnn.getFeatures().get("class"));
+
+	// Remove all annotations inside
+	Long extendStart = orgAnn.getStartNode().getOffset();
+	Long extendStart2 = new Long(orgAnn.getStartNode().getOffset().longValue() + 1);
+
+	Long extendEnd = orgAnn.getEndNode().getOffset();
+	Long extendEnd2 = new Long(orgAnn.getEndNode().getOffset().longValue() - 1);
+
+	// Remove all annotations inside
+	gate.AnnotationSet tempSet;
+	if (extendStart.intValue() <= extendEnd2.intValue())
+	{
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd2);
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split"))
+			{
+				tempSet.remove(ann);
+				remIter = tempSet.iterator();
+			}
+		}
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+	}
+
+	if (extendStart2.intValue() <= extendEnd.intValue())
+	{
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart2, extendEnd);
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split"))
+			{
+				tempSet.remove(ann);
+				remIter = tempSet.iterator();
+			}
+		}
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+	}
+
+	features.put("kind", "organizationPlus");
+	features.put("rule", "Organization_Complex");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization",features);
+}
+

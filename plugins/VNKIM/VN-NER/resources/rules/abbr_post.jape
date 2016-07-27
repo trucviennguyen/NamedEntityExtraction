@@ -1,0 +1,76 @@
+Phase:	abbr_post
+Input: Sentence Split Token JobTitle Title TempPerson TempLocation TempOrganization AllCaps
+Options: control = appelt debug = no
+
+// this has to be run first of all
+// contains any macros etc needed only for standard grammars
+
+Rule: Abbr_Post
+Priority: 1000
+(
+   (
+      ({Token.orth == lowercase})+
+   ):longName
+   {Token.string == "("}
+   ({AllCaps}):abbr
+   {Token.string == ")"}
+)
+-->
+{
+	gate.AnnotationSet longName = (gate.AnnotationSet)bindings.get("longName");
+	gate.Annotation longNameAnn = (gate.Annotation)longName.iterator().next();
+
+	gate.AnnotationSet abbr = (gate.AnnotationSet)bindings.get("abbr");
+	gate.Annotation abbrAnn = (gate.Annotation)abbr.iterator().next();
+
+	String pure = doc.getContent().toString().substring(longName.firstNode().getOffset().intValue(),longName.lastNode().getOffset().intValue());
+	String abbrStr = (String)abbrAnn.getFeatures().get("string");
+
+	String abbreviateString = "";
+	java.util.StringTokenizer tokeniser = new java.util.StringTokenizer(pure, " ");
+	while (tokeniser.hasMoreTokens())
+		abbreviateString = abbreviateString + tokeniser.nextToken().toUpperCase().charAt(0);
+	if (abbreviateString.trim().endsWith(abbrStr))
+	{
+		Long extendStart = abbrAnn.getStartNode().getOffset();
+		Long extendEnd = abbrAnn.getEndNode().getOffset();
+
+		gate.AnnotationSet allCaps = (gate.AnnotationSet)inputAS.get("AllCaps");
+
+		if (allCaps != null && allCaps.size() > 0)
+		{
+			Iterator iter = allCaps.iterator();
+			gate.Annotation allCapsAnn;
+			while (iter.hasNext())
+			{
+				allCapsAnn = (gate.Annotation)iter.next();
+
+				Long extendStart1 = allCapsAnn.getStartNode().getOffset();
+				Long extendEnd1 = allCapsAnn.getEndNode().getOffset();
+
+				String pure1 = doc.getContent().toString().substring(allCapsAnn.getStartNode().getOffset().intValue(),
+								allCapsAnn.getEndNode().getOffset().intValue());
+
+				if (pure1.equals(abbrStr)) 
+				{
+					gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart1, extendEnd1);
+
+					Iterator remIter = tempSet.iterator();
+					java.util.HashSet remSet = new java.util.HashSet();
+
+					while (remIter.hasNext())
+					{
+						Annotation ann = (Annotation)remIter.next();
+
+						if (ann.getType().equalsIgnoreCase("TempPerson") 
+						|| ann.getType().equalsIgnoreCase("TempLocation") 
+						|| ann.getType().equalsIgnoreCase("TempOrganization")
+						|| ann.getType().equalsIgnoreCase("Thực_thể"))
+							remSet.add(ann);
+					}
+					if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+				}
+			}
+		}
+	}
+}

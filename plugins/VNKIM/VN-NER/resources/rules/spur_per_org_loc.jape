@@ -1,0 +1,125 @@
+/*
+ *  spur_per_org_loc.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+Phase:	Spur_Per_Org_Loc
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////////
+// MACRO definition
+/////////////////////////////////////////////////////////////////
+
+Macro: TITLE
+(
+   (  {Title}
+      ({Title})?
+   ) |
+   (  {Title}
+      ({JobTitle})?
+   ) |
+   ({JobTitle})
+)
+
+
+Macro: JOB_TITLE
+(
+   {JobTitle}
+   (
+      ({Token.string == "kiêm"})?
+      {JobTitle}
+   )?
+)
+
+
+///////////////////////////////////////////////////////////
+// Person Rules
+
+Rule:	Not_Spur_PersonTitle
+Priority: 500
+{TempPerson}
+{Token.kind == punctuation}
+(
+   (JOB_TITLE)
+   ({Token})?
+   (  {TempOrganization} |
+      {LR_TempOrganization} |     
+      {TempLocation} |
+      {NLNC.kind == DVHC}
+   )
+   {TempPerson}
+):person
+-->
+{}
+
+
+
+Rule:	Spur_PersonTitle
+Priority: 200
+(
+   (JOB_TITLE)
+   ({Token})?
+   (  {TempOrganization} |
+      {LR_TempOrganization} |     
+      {TempLocation} |
+      {NLNC.kind == DVHC}
+   )
+   ({TempPerson}):personPure
+):person
+-->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+	gate.AnnotationSet personPure = (gate.AnnotationSet)bindings.get("personPure");
+	gate.Annotation personPureAnn = (gate.Annotation)personPure.iterator().next();
+
+	gate.FeatureMap features = personPureAnn.getFeatures();
+
+	// get original string of the trusted text part
+	String pure = doc.getContent().toString().substring(personPure.firstNode().getOffset().intValue(), personPure.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	String gender = null;
+	gate.AnnotationSet title = (gate.AnnotationSet)bindings.get("title");
+	if (title != null && title.size()>0)
+	{
+		gate.Annotation titleAnn = (gate.Annotation)title.iterator().next();
+	 	if (titleAnn != null)  gender = (String) titleAnn.getFeatures().get("gender");
+	}
+	if (gender == null) gender = (String) personPureAnn.getFeatures().get("gender");
+	if (gender != null) features.put("gender", gender);
+
+	Long extendStart = person.firstNode().getOffset();
+	Long extendEnd = person.lastNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)inputAS.getContained(extendStart, extendEnd);
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if ((ann.getType().equals("TempPerson") || ann.getType().equals("TempLocation") || ann.getType().equals("TempOrganization"))
+		 && extendEnd.intValue() == ann.getEndNode().getOffset().intValue())
+			remSet.add(ann);
+		else if (ann.getType().equals("NLNC") || ann.getType().equals("TTCT") || ann.getType().equals("LHCT") || ann.getType().equals("LHKD")
+		 || ann.getType().equals("TTGDDT") || ann.getType().equals("TDDT") || ann.getType().equals("LHTC") || ann.getType().equals("NNDT")
+		 || ann.getType().equals("NLTCNN"))
+			remSet.add(ann);
+		
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+
+	features.put("kind", "personPlus");
+	features.put("rule", "Spur_PersonTitle");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson", features);
+}

@@ -1,0 +1,76 @@
+/*
+ *  person_name_lookup.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Person_Name_Lookup
+Input: Lookup
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////
+// Person Rules
+
+Rule:	GazPerson
+Priority: 1000
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người"}
+)
+:person -->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", personAnn.getFeatures().get("class"));
+	features.put("gender", personAnn.getFeatures().get("gender"));
+	String inst =(String) personAnn.getFeatures().get("inst");
+	if (inst!=null) features.put("inst",inst);
+
+	// Remove all annotations inside
+	Long extendStart = personAnn.getStartNode().getOffset();
+	Long extendStart2 = new Long(personAnn.getStartNode().getOffset().longValue() + 1);
+
+	Long extendEnd = personAnn.getEndNode().getOffset();
+	Long extendEnd2 = new Long(personAnn.getEndNode().getOffset().longValue() - 1);
+
+	gate.AnnotationSet tempSet;
+	java.util.HashSet remSet = null;
+
+	if (extendStart.intValue() <= extendEnd2.intValue())
+	{
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd2);
+		remSet = new java.util.HashSet();
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split") || ann.getType().equalsIgnoreCase("Upper"))
+				remSet.add(ann);
+		}
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+	}
+
+	if (extendStart2.intValue() <= extendEnd.intValue())
+	{
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart2, extendEnd);
+		remSet = new java.util.HashSet();
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split") || ann.getType().equalsIgnoreCase("Upper"))
+				remSet.add(ann);
+		}
+
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+	}
+
+	features.put("kind", "personName");
+	features.put("rule", "GazPerson");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson", features);
+}

@@ -1,0 +1,65 @@
+/*
+ *  organization_name_final.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Organization_Name_Final
+Input: TempOrganization
+Options: control = brill debug = no
+
+Rule: OrganizationFinal
+Priority: 40
+(
+   {TempOrganization}
+)
+:org
+ -->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("org");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	int i = 0;
+	boolean Ok = true;
+
+	String st = doc.getContent().toString().substring(orgSet.firstNode().getOffset().intValue(), orgSet.lastNode().getOffset().intValue());
+
+	if (st.length() == 1)
+		Ok = false;
+	else
+	{
+		for (i = 0; i < st.length() && !java.lang.Character.isWhitespace(st.charAt(i)); i++);
+		if (i == st.length())
+		{
+			i = 0;
+			int nbrUpper = 0;
+			int nbrLower = 0;
+			while (i < st.length())
+			{
+				if (java.lang.Character.isUpperCase(st.charAt(i))) nbrUpper++;
+				else if (java.lang.Character.isLowerCase(st.charAt(i))) nbrLower++;
+				i++;
+			}
+			if (((nbrUpper + nbrLower == st.length()) && nbrLower > 0)
+			|| (nbrUpper <= st.length() - nbrUpper - nbrLower))
+			{
+				annotations.remove(orgAnn);
+				Ok = false;
+			}
+		}
+	}
+
+	if (Ok)
+	{
+		gate.FeatureMap features = orgAnn.getFeatures();
+
+		features.put("rule", "OrganizationFinal");
+		annotations.add(orgSet.firstNode(), orgSet.lastNode(), "Tổ_chức", features);
+	}
+}
+
+

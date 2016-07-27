@@ -1,0 +1,126 @@
+/*
+ *  remove_overlap_name.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Remove_Overlap_Name
+Input: TempPerson TempLocation TempOrganization
+Options: control = brill debug = no
+
+
+///////////////////////////////////////////////////////////////////
+// Person Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempPerson có dạng không đầy đủ (vd. không có chức danh đi trước hay nhận ra ở giai đoạn Lookup), 
+ * loại bỏ tất cả các chú giải TempLocation và TempOrganization nằm trùng một phần
+ */
+
+Rule:	Remove_Overlap_Person
+Priority: 145
+(
+   {TempPerson.kind == personName}
+)
+:perName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("perName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = orgAnn.getStartNode().getOffset();
+	Long extendEnd = orgAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("TempLocation") || ann.getType().equalsIgnoreCase("TempOrganization"))
+			if (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+			 || extendEnd.intValue() > ann.getEndNode().getOffset().intValue())
+				remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+///////////////////////////////////////////////////////////////////
+// Location Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempLocation có dạng không đầy đủ (vd. không có ngữ liệu nơi chốn đi trước hay nhận ra ở giai đoạn Lookup), 
+ * loại bỏ tất cả các chú giải TempPerson và TempOrganization nằm trùng một phần
+ */
+
+Rule:	Remove_Overlap_Location
+Priority: 145
+(
+   {TempLocation.kind == locationName}
+)
+:locName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("locName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = orgAnn.getStartNode().getOffset();
+	Long extendEnd = orgAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("TempPerson") || ann.getType().equalsIgnoreCase("TempOrganization"))
+			if (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+			 || extendEnd.intValue() > ann.getEndNode().getOffset().intValue())
+				remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+
+
+///////////////////////////////////////////////////////////////////
+// Organization Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempOrganization có dạng không đầy đủ (vd. không có tiền tố, loại hình công ty đi trước hay nhận ra ở giai đoạn Lookup), 
+ * loại bỏ tất cả các chú giải TempPerson và TempLocation nằm trùng một phần
+ */
+
+Rule:	Remove_Overlap_Organization
+Priority: 145
+(
+   {TempOrganization.kind == organizationName}
+)
+:orgName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = orgAnn.getStartNode().getOffset();
+	Long extendEnd = orgAnn.getEndNode().getOffset();
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equalsIgnoreCase("TempPerson") || ann.getType().equalsIgnoreCase("TempLocation"))
+			if (extendStart.intValue() < ann.getStartNode().getOffset().intValue() 
+			 || extendEnd.intValue() > ann.getEndNode().getOffset().intValue())
+				remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+

@@ -1,0 +1,61 @@
+/*
+ *  organization_null_filter.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+
+/* Đối với mỗi thực thể TempOrganization không có inst (ie. không có trong KB)
+ * Loại bỏ tất cả các chú giải nằm trùng một phần 
+ * hoặc toàn phần mà không phải TempPerson và TempLocation
+ */
+Phase:	Organization_Null_Filter
+Input: TempOrganization
+Options: control = appelt debug = no
+
+Rule: Organization_Null_Filter
+Priority: 40
+(
+   {TempOrganization.inst == "null"}
+)
+:org
+ -->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("org");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	Long extendStart = orgAnn.getStartNode().getOffset();
+	Long extendEnd = orgAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	java.util.HashSet remSet = new java.util.HashSet();
+	Iterator iter = tempSet.iterator();
+	while (iter.hasNext())
+	{
+		Annotation ann = (Annotation)iter.next();
+		String inst1 = (String)ann.getFeatures().get("inst");
+
+		if (ann.getType().equalsIgnoreCase("NamedEntity") || ann.getType().equalsIgnoreCase("Np") 
+		|| ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+		|| ann.getType().equalsIgnoreCase("Split"))
+			remSet.add(ann);
+		else if (extendStart.intValue() == ann.getStartNode().getOffset().intValue() 
+		&& extendEnd.intValue() == ann.getEndNode().getOffset().intValue())
+		{
+			if (ann.getType().equalsIgnoreCase("TempPerson") || ann.getType().equalsIgnoreCase("TempLocation"))
+				remSet.add(ann);
+		}
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	gate.FeatureMap features = orgAnn.getFeatures();
+	features.put("rule", "Organization_Null_Filter");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+
+

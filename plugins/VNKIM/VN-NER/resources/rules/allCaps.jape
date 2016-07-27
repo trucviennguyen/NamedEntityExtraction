@@ -1,0 +1,21 @@
+Phase:	allCaps
+Input: Token
+Options: control = appelt debug = no
+
+// this has to be run first of all
+// contains any macros etc needed only for standard grammars
+
+Rule: AllCaps
+Priority: 1000
+(
+   {Token.orth == allCaps}
+)
+:allCaps
+-->
+{
+	gate.AnnotationSet allCapsSet = (gate.AnnotationSet)bindings.get("allCaps");
+	gate.Annotation allCapsAnn = (gate.Annotation)allCapsSet.iterator().next();
+
+	gate.FeatureMap features = allCapsAnn.getFeatures();
+	annotations.add(allCapsSet.firstNode(), allCapsSet.lastNode(), "AllCaps", features);
+}

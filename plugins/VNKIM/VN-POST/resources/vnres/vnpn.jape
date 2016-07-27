@@ -1,0 +1,316 @@
+// ChauNguyen 12/09/2005
+// $id$
+
+Phase:postprocess
+Input: Token SpaceToken
+Options: control = appelt
+
+//------- ChauNguyen starts adding ------
+Rule: vnWord
+  ({Token}):left
+-->
+{
+  gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("left");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+
+  features.put("orth", "vnWord ");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+
+Rule: PP2
+ (({Token.string=="Anh"}|{Token.string=="anh"}|{Token.string=="Em"}|{Token.string=="em"}|{Token.string=="Tôi"}|{Token.string=="Chị"}|{Token.string=="chị"}|{Token.string=="Cô"}|{Token.string=="cô"}|{Token.string=="Ông"}|{Token.string=="ông"}|{Token.string=="Bà"}|{Token.string=="bà"}|{Token.string=="Bác"}|{Token.string=="bác"}|{Token.string=="Thầy"}|{Token.string=="thầy"})({SpaceToken})+({Token.string=="đó"}|{Token.string=="ấy"}|{Token.string=="kia"}|{Token.string=="nầy"}))+ :pp2
+ -->
+{
+ gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("pp2");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Pp");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+
+Rule: Date1
+  (({Token.kind=="number"})((({SpaceToken})*{Token.string=="-"}({SpaceToken})*|({SpaceToken})*{Token.string=="/"}({SpaceToken})*){Token.kind=="number"})+)+  :date
+-->
+{
+  gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("date");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "Date");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Date");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+Rule: Date2
+(
+({Token.string=="ngày"}|{Token.string=="Ngày"})({SpaceToken})+{Token.kind=="number"}({SpaceToken})+({Token.string=="tháng"}|{Token.string=="Tháng"})({SpaceToken})+{Token.kind=="number"}({SpaceToken})+({Token.string=="năm"}|{Token.string=="Năm"})({SpaceToken})+{Token.kind=="number"}|
+({Token.string=="ngày"}|{Token.string=="Ngày"})({SpaceToken})+{Token.kind=="number"}({SpaceToken})+|
+({Token.string=="tháng"}|{Token.string=="Tháng"})({SpaceToken})+{Token.kind=="number"}({SpaceToken})+|
+({Token.string=="năm"}|{Token.string=="Năm"})({SpaceToken})+{Token.kind=="number"}({SpaceToken})+
+)+  :date
+-->
+{
+  gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("date");
+ //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "Date");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "Date");
+  annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+}
+
+Rule: PN2
+ (({Token.orth=="upperInitial"}|{Token.orth=="lowercase"})(({SpaceToken})+({Token.orth=="upperInitial"})+)+)+ :left
+ -->
+{
+    gate.AnnotationSet toNew = (gate.AnnotationSet)bindings.get("left");
+  //get the tokens
+    java.util.ArrayList tokens = new java.util.ArrayList(toNew);
+  //define a comparator for annotations by start offset
+    Collections.sort(tokens, new gate.util.OffsetComparator());
+    String text = "";
+    Iterator tokIter = tokens.iterator();
+    gate.Annotation firstToken = (gate.Annotation)tokIter.next();
+    String firstTokenText = (String)firstToken.getFeatures().get("string");
+
+    if(firstTokenText.matches("Ông")||firstTokenText.matches("Con")||firstTokenText.matches("Cô")||firstTokenText.matches("Anh")||firstTokenText.matches("Bà")||firstTokenText.matches("Thầy")||firstTokenText.matches("Cha")||firstTokenText.matches("Chị")||firstTokenText.matches("Chú")||firstTokenText.matches("Cậu")||firstTokenText.matches("Cụ")||firstTokenText.matches("Cha")||firstTokenText.matches("Cháu")||firstTokenText.matches("Cố")||firstTokenText.matches("Em")||firstTokenText.matches("Má")||firstTokenText.matches("Mẹ")||firstTokenText.matches("Mụ")||firstTokenText.matches("Thím")||firstTokenText.matches("Bác")||firstTokenText.matches("Bố")||firstTokenText.matches("Ba")||firstTokenText.matches("Cha")||firstTokenText.matches("Dì")||firstTokenText.matches("Dượng")||firstTokenText.matches("ông")||firstTokenText.matches("con")||firstTokenText.matches("cô")||firstTokenText.matches("anh")||firstTokenText.matches("bà")||firstTokenText.matches("thầy")||firstTokenText.matches("cha")||firstTokenText.matches("chị")||firstTokenText.matches("chú")||firstTokenText.matches("cậu")||firstTokenText.matches("cụ")||firstTokenText.matches("cha")||firstTokenText.matches("cháu")||firstTokenText.matches("cố")||firstTokenText.matches("em")||firstTokenText.matches("má")||firstTokenText.matches("mẹ")||firstTokenText.matches("mụ")||firstTokenText.matches("thím")||firstTokenText.matches("bác")||firstTokenText.matches("bố")||firstTokenText.matches("ba")||firstTokenText.matches("cha")||firstTokenText.matches("dì")||firstTokenText.matches("dượng"))
+    {
+   //create the new tokens
+   //   System.out.println(firstTokenText);
+      Long ofs0 = firstToken.getStartNode().getOffset();
+      Long ofs1 = new Long(firstToken.getEndNode().getOffset().longValue());
+    	Long ofs2 = new Long(firstToken.getEndNode().getOffset().longValue() +1);
+    	Long ofs3 = ((gate.AnnotationSet)bindings.get("left")).lastNode().getOffset();
+    	try{
+      	while(tokIter.hasNext())
+      	text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+		gate.FeatureMap features;
+            features = Factory.newFeatureMap();
+      	features.put("kind", "word");
+ 		features.put("string", text);
+  		features.put("length", Integer.toString(text.length()));
+  		features.put("orth", "Np");
+  		annotations.add(ofs2 ,ofs3 , "vnWord", features);
+
+            features = Factory.newFeatureMap();
+ 		features.put("kind", "word");
+ 		features.put("string", firstTokenText);
+  		features.put("length", Integer.toString(firstTokenText.length()));
+  		features.put("orth", "Nt");
+  		annotations.add(ofs0 ,ofs1 , "vnWord", features);
+
+
+     	}catch(Exception e)
+		{
+      		e.printStackTrace();
+    		}
+    }// end if
+    else
+     {
+                           String firstTokenOrth=(String)firstToken.getFeatures().get("orth");
+                             if(firstTokenOrth.matches("lowercase"))
+  	{
+                                 Long ofs0 = firstToken.getStartNode().getOffset();
+                                 Long ofs1 = new Long(firstToken.getEndNode().getOffset().longValue());
+    	   Long ofs2 = new Long(firstToken.getEndNode().getOffset().longValue() +1);
+    	   Long ofs3 = ((gate.AnnotationSet)bindings.get("left")).lastNode().getOffset();
+    	try{
+      	while(tokIter.hasNext())
+      	text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+		gate.FeatureMap features;
+	features = Factory.newFeatureMap();
+      	features.put("kind", "word");
+ 		features.put("string", text);
+  		features.put("length", Integer.toString(text.length()));
+  		features.put("orth", "Np");
+  		annotations.add(ofs2 ,ofs3 , "vnWord", features);
+
+           	 features = Factory.newFeatureMap();
+ 		features.put("kind", "word");
+ 		features.put("string", firstTokenText);
+  		features.put("length", Integer.toString(firstTokenText.length()));
+  		features.put("orth", "lowercase");
+  		annotations.add(ofs0 ,ofs1 , "vnWord", features);
+
+
+     	}catch(Exception e)
+		{
+      		e.printStackTrace();
+    		}
+                             }
+                             else
+                            {
+  	String ntext = firstTokenText;
+
+  	while(tokIter.hasNext())
+    	ntext += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  	gate.FeatureMap features = Factory.newFeatureMap();
+ 	 features.put("kind", "word");
+  	features.put("string", ntext);
+  	features.put("length", Integer.toString(ntext.length()));
+  	features.put("orth", "Np");
+  	annotations.add(toNew.firstNode(), toNew.lastNode(), "vnWord", features);
+                             }
+      }
+}
+
+//------- ChauNguyen stops adding ------
+/*
+//adjusts the tokeniser output
+
+Rule: simpleJoin
+ (
+  //'30s, ..., 'Cause, 'em, 'N, 'S, 's, 'T, 'd, , 'll, 'm, 're, 's, 'til, 've
+  (
+   {Token.string=="'"}
+   ({Token.string=="30s"}|{Token.string=="40s"}|{Token.string=="50s"}|{Token.string=="60s"}
+    |{Token.string=="70s"}|{Token.string=="80s"}|{Token.string=="90s"}|{Token.string=="Cause"}
+    |{Token.string=="cause"}|{Token.string=="Em"}|{Token.string=="em"}|{Token.string=="N"}
+    |{Token.string=="S"}|{Token.string=="s"}|{Token.string=="T"}|{Token.string=="d"}
+    |{Token.string=="ll"}|{Token.string=="m"}|{Token.string=="re"}|{Token.string=="s"}
+    |{Token.string=="til"}|{Token.string=="ve"})
+  )
+  |
+  //'n'
+  ({Token.string=="'"} {Token.string=="n"} {Token.string=="'"})
+  |
+  //C'mon
+  (({Token.string=="C"}|{Token.string=="c"}){Token.string=="'"} {Token.string=="mon"})
+  |
+  //o'clock
+  (({Token.string=="O"}|{Token.string=="o"}){Token.string=="'"} {Token.string=="clock"})
+  |
+  //ma'am
+  (({Token.string=="ma"}|{Token.string=="Ma"}){Token.string=="'"} {Token.string=="am"})
+
+ ):left
+-->
+{
+  gate.AnnotationSet toRemove = (gate.AnnotationSet)bindings.get("left");
+  annotations.removeAll(toRemove);
+  //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toRemove);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "word");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  features.put("orth", "apostrophe");
+  annotations.add(toRemove.firstNode(), toRemove.lastNode(), "Token", features);
+}
+
+//?n't
+Rule: VBneg
+   ({Token}):one
+   ({Token.string=="'"}{Token.string=="t"}):two
+-->
+{
+  gate.Annotation firstToken = (gate.Annotation)
+                               ((gate.AnnotationSet)bindings.get("one")).iterator().next();
+  String firstTokenText = (String)firstToken.getFeatures().get("string");
+  if(firstTokenText.endsWith("n")){
+    //remove the old tokens
+    annotations.removeAll((gate.AnnotationSet)bindings.get("one"));
+    annotations.removeAll((gate.AnnotationSet)bindings.get("two"));
+    //create the new tokens
+    Long ofs0 = firstToken.getStartNode().getOffset();
+    Long ofs1 = new Long(firstToken.getEndNode().getOffset().longValue() - 1);
+    Long ofs2 = ((gate.AnnotationSet)bindings.get("two")).lastNode().getOffset();
+    try{
+      gate.FeatureMap features;
+      if(!ofs0.equals(ofs1)){
+        features = Factory.newFeatureMap();
+        features.put("kind", "word");
+        String text = firstTokenText.substring(0, firstTokenText.length() - 1);
+        features.put("string", text);
+        features.put("length", Integer.toString(text.length()));
+        features.put("orth", firstToken.getFeatures().get("orth"));
+        annotations.add(ofs0, ofs1, "Token", features);
+      }
+
+      features = Factory.newFeatureMap();
+      features.put("kind", "word");
+      features.put("string", "n't");
+      features.put("length", "3");
+      features.put("orth", "lowercase");
+      annotations.add(ofs1, ofs2, "Token", features);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+  }//if first token ends with "n"
+}
+
+// CR+LF | CR |LF+CR -> One single SpaceToken
+Rule: NewLine
+ (
+  ({SpaceToken.string=="\n"}) |
+  ({SpaceToken.string=="\r"}) |
+  ({SpaceToken.string=="\n"}{SpaceToken.string=="\r"}) |
+  ({SpaceToken.string=="\r"}{SpaceToken.string=="\n"})
+  ):left
+-->
+{
+  gate.AnnotationSet toRemove = (gate.AnnotationSet)bindings.get("left");
+  annotations.removeAll(toRemove);
+  //get the tokens
+  java.util.ArrayList tokens = new java.util.ArrayList(toRemove);
+  //define a comparator for annotations by start offset
+  Collections.sort(tokens, new gate.util.OffsetComparator());
+  String text = "";
+  Iterator tokIter = tokens.iterator();
+  while(tokIter.hasNext())
+    text += (String)((Annotation)tokIter.next()).getFeatures().get("string");
+
+  gate.FeatureMap features = Factory.newFeatureMap();
+  features.put("kind", "control");
+  features.put("string", text);
+  features.put("length", Integer.toString(text.length()));
+  annotations.add(toRemove.firstNode(), toRemove.lastNode(), "SpaceToken", features);
+}
+*/

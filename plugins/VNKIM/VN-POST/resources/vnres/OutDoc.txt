@@ -1,0 +1,366 @@
+Thứ năm	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+24/4/2008	Nc, Ng, Aa, Na, Vt, Vit
+,	,
+09	Nn
+:	:
+57	Nn
+GMT	Np
++	Nc, Ng, Aa, Na, Vit, Vt
+7	Nn
+Bản	Np
+để	Ng, Nc, Aa, Vit, Na, Vt
+in	Vt
+Gửi	Np
+cho	Cc, Vt, I, X
+bạn bè	Aa, Nc, Ng, Na, Vit, Vt
+Mỹ	Np
+bổ nhiệm	Ng, Nc, Vt, Aa, Na, Vit
+tư lệnh	Nc, Ng, Aa, Na, Vit, Vt
+mới	Nc, Aa, Ng, Vit, Vt, Na
+cho	Cc, Vt, I, X
+Trung Đông
+
+Tướng David Patraeus	Nc, Ng, Aa, Na, Vit, Vt
+.	.
+Ảnh	Np
+:	:
+Getty Images	Nc, Aa, Na, Vit, Vt, Ng
+.	.
+Tướng David Patraeus	Nc, Ng, Na, Vt, Aa, Vit
+.	.
+Ảnh	Np
+:	:
+Getty Images	Nc, Aa, Na, Vit, Vt, Ng
+.	.
+Lầu Năm Góc	Nc, Ng, Aa, Na, Vit, Vt
+hôm qua	Nc, Ng, Aa, Vt, Na, Vit
+bổ nhiệm	Nc, Ng, Aa, Vt, Na, Vit
+tư lệnh	Nc, Ng, Aa, Vt, Na, Vit
+quân đội	Vit, Nc, Ng, Aa, Na, Vt
+Mỹ	Np
+tại	Ng, Nc, Vt, Aa, Na, Vit
+Iraq David Petraeus	Nc, Ng, Aa, Na, Vit, Vt
+làm	Nc, Ng, Aa, Vt, Na, Vit
+lãnh đạo	Nc, Ng, Aa, Vt, Na, Vit
+mới	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+sở chỉ huy	Nc, Ng, Aa, Vt, Na, Vit
+trung ương	Vit, Vt, Nc, Ng, Aa, Na
+(	(
+CentCom	Np
+)	)
+,	,
+phụ trách	Ng, Aa, Na, Vit, Nc, Np
+từ	Nc, Ng, Aa, Na, Vt, Vit
+vùng	Vit, Nc, Aa, Ng, Na, Vt
+Sừng	Np
+châu	Ng, Aa, Vit, Na, Nc, Vt
+Phi	Np
+tới	Ng, Na, Nc, Aa, Vt, Vit
+Trung Á	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+bao gồm	Nc, Ng, Aa, Vit, Vt, Na
+hai	Nn, Na
+cuộc chiến	Vit, Vt, Aa, Nc, Ng, Np
+tại	Ng, Nc, Na, Vt, Vit, Aa
+Trung Đông	Nc, Ng, Aa, Na, Vt, Vit
+là	Vit, Nc, Aa, Ng, Na, Vt
+Iraq	Np
+và	Ng, Aa, Vit, Na, Nc, Vt
+Afghanistan	Np
+.	.
+Quyết định	Nc, Ng, Aa, Na, Vit, Vt
+bổ nhiệm	Nc, Ng, Aa, Vt, Na, Vit
+nói	Nc, Ng, Aa, Vt, Na, Vit
+trên	Nc, Aa, Ng, Na, Vit, Vt
+do	Cm, Nc
+Bộ trưởng Quốc phòng  Robert Gates	Nc, Ng, Aa, Na, Vt, Vit
+đưa ra	Nc, Ng, Aa, Vt, Na, Vit
+và	Nc, Ng, Aa, Vt, Na, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+chỉ	Nc, Ng, Aa, Vt, Na, Vit
+có hiệu lực	Nc, Ng, Aa, Vit, Na, Vt
+sau	Nl, Na
+khi	Nl, Vim, Vtim, Vt, Na
+được	Nc, Vit, Ng, Aa, Vt, Na
+thượng viện	Nc, Ng, Aa, Na, Vt, Vit
+phê chuẩn	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Sau	Np
+khi	Nl, Vim, Vt, Na, Vtim
+hoàn tất	Aa, Vit, Nc, Vt, Ng, Na
+các	Vt, Nc, Ng, Np, Aa, Na
+thủ tục pháp lý	Nc, Ng, Aa, Vit, Na, Vt
+,	,
+tướng	Aa, Nc, Vit, Ng, Vt, Na
+Petraeus	Np
+sẽ	Ng, Nc, Vt, Aa, Na, Vit
+chính thức	Ng, Aa, Nc, Na, Vit, Vt
+thay	Vt, E
+đô đốc	Nc, Ng, Aa, Na, Vt, Vit
+William Fallon	Nc, Ng, Aa, Vt, Na, Vit
+phụ trách	Vit, Nc, Aa, Ng, Na, Vt
+CentCom	Np
+,	,
+sau	Nl, Na
+khi	Nl, Vim, Vtim, Vt, Na
+ông từ	Nc, Vit, Ng, Aa, Vt, Na
+chức	Nc, Ng, Aa, Na, Vt, Vit
+hồi	Nc, Ng, Aa, Vt, Na, Vit
+tháng	Ng, Nc, Aa, Na, Vit, Vt
+3	Nn
+.	.
+Sự	Np
+ra đi	Ng, Nc, Np, Vt, Aa, Vit
+của	Nc, Ng, Aa, Na, Vit, Vt
+đô đốc	Vit, Nc, Aa, Ng, Na, Vt
+Fallon	Np
+diễn ra	Ng, Nc, Aa, Vt, X, Vit
+trong	Nl, Cm, Na, Aa
+bối cảnh	Nc, Vit, Ng, Aa, Na, Vt
+xuất hiện	Ng, Nc, Aa, X, Na, Vit
+tin	Vtim, Na, Vim, Vt, Aa
+cho	Cc, Vt, I, X
+rằng	Aa, Vit, Vt, Nc, Ng, Na
+ông	Nc, Np, Ng, Aa, Na, Vt
+bất đồng	Nc, Ng, Aa, Na, Vt, Vit
+với	Nc, Ng, Aa, Vt, Na, Vit
+chính sách	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+Tổng thống  Bush	Nc, Ng, Aa, Vt, Na, Vit
+về	Vit, Nc, Ng, Aa, Na, Vt
+Iran	Np
+.	.
+Mọi	Np
+chuyện	Ng, Nc, Np, Vt, Aa, Vit
+bắt đầu	Nc, Ng, Aa, Na, Vit, Vt
+khi	Nl, Vim, Vt, Vtim, Na
+tạp chí	Vit, Aa, Nc, Np, Ng, X
+Esquire	Np
+đăng bài	Nc, Ng, Na, Vit, Aa, Vt
+nói	Ng, Na, Vit, Nc, Aa, Vt
+sĩ quan	Nc, Ng, Aa, Na, Vt, Vit
+cao cấp	Nc, Ng, Aa, Vt, Na, Vit
+này	Nc, Ng, Aa, Vt, Na, Vit
+phản đối	Nc, Ng, Aa, Vt, Na, Vit
+việc	Nc, Ng, Aa, Vt, Na, Vit
+sử dụng	Nc, Ng, Aa, Vt, Na, Vit
+vũ lực	Nc, Ng, Aa, Vt, Na, Vit
+chống lại	Vit, Ng, Aa, Nc, Na, Vt
+Iran	Np
+xung quanh	Nl, Ng, Cm, Na
+vấn đề	Aa, Vit, Nc, Vt, Ng, Na
+hạt nhân	Vt, Nc, Ng, Aa, Na, Vit
+.	.
+Nhưng	Np
+trong	Nl, Cm, Na, Aa
+thông báo	Aa, Vit, Nc, Vt, Ng, Na
+nghỉ hưu	Vt, Nc, Ng, Np, Aa, Na
+sớm	Nc, Ng, Aa, Na, Vt, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+mình	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+đô đốc	Nc, Ng, Aa, Vt, Na, Vit
+William Fallon	Nc, Ng, Aa, Vt, Vit, Na
+cho	Cc, Vt, I, X
+biết	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+những	Nc, Ng, Aa, Vt, Na, Vit
+thông tin	Nc, Ng, Aa, Vt, Na, Vit
+về	Nc, Ng, Aa, Vt, Na, Vit
+việc	Nc, Ng, Aa, Vt, Na, Vit
+có	Nc, Ng, Aa, Vt, Na, Vit
+sự	Nc, Ng, Aa, Vt, Na, Vit
+khác biệt	Nc, Ng, Aa, Vt, Na, Vit
+giữa	Nc, Ng, Aa, Vt, Na, Vit
+ông	Nc, Ng, Aa, Vt, Na, Vit
+với	Nc, Ng, Aa, Vt, Na, Vit
+chính sách	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+tổng thống	Nc, Ng, Aa, Vt, Na, Vit
+là	Nc, Ng, Aa, Vt, Na, Vit
+không	Nc, Ng, Aa, Vt, Na, Vit
+chính xác	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+nhưng	Nc, Ng, Aa, Vt, Na, Vit
+nó	Nc, Ng, Aa, Vt, Na, Vit
+gây ra	Nc, Ng, Aa, Vt, Na, Vit
+quá nhiều	Nc, Ng, Aa, Vt, Na, Vit
+rắc rối	Nc, Ng, Aa, Vt, Na, Vit
+và	Nc, Ng, Aa, Vt, Na, Vit
+khiến	Nc, Ng, Aa, Vt, Na, Vit
+ông	Nc, Ng, Aa, Vt, Na, Vit
+gặp khó khăn	Nc, Ng, Aa, Vit, Na, Vt
+trong	Nl, Cm, Na, Aa
+việc	Vit, Nc, Ng, Np, Aa, Na
+thực thi	Ng, Nc, Aa, Na, Vt, Np
+nhiệm vụ	Nc, Ng, Aa, Na, Vit, Vt
+.	.
+Bộ trưởng Quốc phòng  Mỹ Robert Gates	Nc, Ng, Aa, Vit, Na, Vt
+cho	Cc, Vt, I, X
+biết	Nc, Ng, Aa, Na, Vit, Vt
+,	,
+Hội đồng	Nc, Ng, Aa, Vt, Na, Vit
+tham mưu trưởng	Nc, Ng, Aa, Vt, Na, Vit
+liên quân	Nc, Ng, Aa, Vt, Na, Vit
+đã	Nc, Ng, Aa, Vt, Na, Vit
+đồng ý	Nc, Ng, Aa, Vt, Na, Vit
+bổ nhiệm	Nc, Ng, Aa, Vt, Na, Vit
+tướng	Nc, Ng, Aa, Vt, Na, Vit
+David Petraeus	Nc, Ng, Aa, Vt, Na, Vit
+làm	Nc, Ng, Aa, Vt, Na, Vit
+tư lệnh	Vit, Nc, Ng, Aa, Na, Vt
+CentCom	Np
+và	Ng, Nc, Vt, Aa, Na, Vit
+ông	Na, Vit, Nc, Aa, Vt, Ng
+"	"
+hoàn toàn	Ng, Na, Nc, Vt, Aa, Vit
+tin tưởng	Nc, Ng, Aa, Na, Vt, Vit
+đây	Nc, Ng, Aa, Vt, Na, Vit
+là	Nc, Ng, Aa, Vt, Na, Vit
+người	Nc, Ng, Aa, Vt, Na, Vit
+thích hợp	Nc, Ng, Aa, Vt, Na, Vit
+nhất	Nc, Ng, Aa, Vt, Na, Vit
+"	"
+cho	Cc, Vt, I, X
+công việc	Aa, Na, Vit, Vt, Nc, Ng
+này	Nc, Ng, Aa, Vit, Na, Vt
+.	.
+Trung tướng
+   Ray Odierno	Nc, Ng, Aa, Na, Vit, Vt
+Trung tướng	Nc, Ng, Aa, Vt, Vit, Na
+.	.
+Ảnh	Np
+:	:
+AP	Np
+.	.
+Người	Np
+đứng đầu	Ng, Nc, Np, Vt, Aa, Vit
+Lầu Năm Góc	Nc, Ng, Aa, Na, Vit, Vt
+cũng	Nc, Ng, Aa, Vt, Na, Vit
+thông báo	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+tướng	Aa, Nc, Vit, Ng, Vt, Na
+Petraeus	Np
+sẽ	Ng, Nc, Vt, Aa, Na, Vit
+không	Nc, Ng, Aa, Na, Vit, Vt
+rời	Vit, Nc, Aa, Ng, Na, Vt
+Iraq	Np
+trước	Ng, Nc, Vt, Aa, Na, Vit
+cuối	Nc, Ng, Aa, Na, Vit, Vt
+mùa	Nc, Ng, Aa, Vt, Na, Vit
+hè	Nc, Ng, Aa, Vt, Na, Vit
+năm	Ng, Nc, Aa, Na, Vit, Vt
+nay	Pd
+cho	Cc, Vt, I, X
+dù	Nc, Ng, Aa, Na, Vit, Vt
+quyết định	Nc, Ng, Aa, Vt, Na, Vit
+bổ nhiệm	Nc, Ng, Aa, Vt, Na, Vit
+được	Nc, Ng, Aa, Vt, Na, Vit
+phê chuẩn	Nc, Aa, Ng, Na, Vit, Vt
+,	,
+nhằm	Nc, Ng, Aa, Vt, Na, Vit
+đảm bảo	Nc, Ng, Aa, Vt, Na, Vit
+ông	Nc, Ng, Aa, Vt, Na, Vit
+có	Nc, Ng, Aa, Vt, Na, Vit
+đủ	Nc, Ng, Aa, Vt, Na, Vit
+thời gian	Nc, Ng, Aa, Vt, Na, Vit
+để	Nc, Ng, Aa, Vt, Na, Vit
+chuyển giao	Nc, Ng, Aa, Vt, Na, Vit
+nhiệm vụ	Nc, Ng, Aa, Vt, Na, Vit
+một cách	Nc, Ng, Aa, Vt, Na, Vit
+ổn	Nc, Ng, Aa, Vt, Na, Vit
+thỏa	Nc, Ng, Aa, Vt, Na, Vit
+tại	Vit, Nc, Ng, Aa, Na, Vt
+Iraq	Np
+.	.
+Trung tướng  Ray Odierno	Nc, Vit, Vt, Aa, Ng, Na
+,	,
+vị	Nc, Ng, Aa, Vt, Na, Vit
+phó	Nc, Ng, Aa, Vt, Na, Vit
+của	Nc, Ng, Aa, Vt, Na, Vit
+ông	Vit, Nc, Ng, Aa, Na, Vt
+Patraeus	Np
+tại	Ng, Nc, Vt, Aa, Na, Vit
+chiến trường	Aa, Vit, Nc, Ng, Na, Vt
+Iraq	Np
+và	Ng, Nc, Vt, Aa, Na, Vit
+hiện	Nc, Ng, Aa, Na, Vit, Vt
+là	Nc, Ng, Aa, Vt, Na, Vit
+tư lệnh quân đoàn	Nc, Ng, Aa, Vit, Na, Vt
+3	Nn
+,	,
+được	Na, Vit, Nc, Ng, Aa, Vt
+đề cử	Nc, Ng, Aa, Na, Vit, Vt
+sẽ	Nc, Ng, Aa, Na, Vt, Vit
+lên	Nc, Ng, Aa, Vt, Na, Vit
+thay thế	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Bộ trưởng  Gates	Nc, Ng, Aa, Vit, Na, Vt
+cho	Cc, Vt, I, X
+rằng	Nc, Ng, Aa, Na, Vt, Vit
+tướng	Vit, Nc, Ng, Aa, Na, Vt
+Odierno	Np
+đã	Ng, Nc, Vt, Aa, Na, Vit
+thu được	Nc, Ng, Aa, Na, Vit, Vt
+rất	Nc, Ng, Aa, Vt, Na, Vit
+nhiều	Nc, Ng, Aa, Vt, Na, Vit
+kinh nghiệm	Nc, Ng, Aa, Vit, Na, Vt
+trong	Nl, Cm, Na, Aa
+thời gian	Vit, Nc, Ng, Np, Aa, Na
+làm	Nc, Ng, Aa, Vt, Na, Vit
+"	"
+cánh tay phải	Ng, Na, Nc, Vt, Aa, Vit
+của	Aa, Vit, Ng, Nc, Vt, X
+Petraeus	Np
+"	"
+tại	Ng, Nc, Na, Vit, Vt, Aa
+Iraq	Np
+suốt	Ng, Na, Nc, Aa, Vt, Vit
+một	Nc, Ng, Aa, Na, Vit, Vt
+năm	Na, Nc, Aa, Ng, Vit, Vt
+qua	Vto, Vo, Cm, Pp, I, Aa
+.	.
+Lầu Năm Góc	Vit, Nc, Ng, Aa, Na, Vt
+hy vọng	Ng, Na, Vt, Nc, Np, Aa
+cả hai	Nc, Ng, Aa, Na, Vt, Vit
+quyết định	Nc, Ng, Aa, Vt, Na, Vit
+bổ nhiệm	Nc, Ng, Aa, Vt, Na, Vit
+trên	Nc, Ng, Aa, Vt, Na, Vit
+sẽ	Nc, Ng, Aa, Vt, Na, Vit
+được	Nc, Ng, Aa, Vt, Na, Vit
+Thượng viện  Mỹ	Nc, Ng, Aa, Vt, Na, Vit
+phê chuẩn	Nc, Ng, Aa, Vt, Na, Vit
+vào	Nc, Ng, Aa, Vt, Na, Vit
+ngày	Nc, Ng, Aa, Vt, Na, Vit
+26/5	Nc, Ng, Aa, Vt, Na, Vit
+tới	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Chức	Np
+tư lệnh	Ng, Aa, Vit, Na, Nc, Vt
+CentCom	Np
+đang	Ng, Na, Nc, Aa, Vt, Vit
+do	Cm, Nc
+trung tướng	Nc, Ng, Aa, Na, Vt, Vit
+Martin Dempsey	Nc, Ng, Aa, Vt, Na, Vit
+tạm thời	Nc, Ng, Aa, Vt, Na, Vit
+đảm nhận	Nc, Aa, Ng, Vit, Na, Vt
+.	.
+Ông	Np
+là	Ng, Nc, Np, Vt, Aa, Vit
+phó	Nc, Ng, Aa, Na, Vit, Vt
+của	Nc, Ng, Aa, Vt, Na, Vit
+đô đốc	Nc, Ng, Aa, Vt, Na, Vit
+William Fallon	Nc, Ng, Aa, Vt, Na, Vit
+và	Nc, Ng, Aa, Vt, Na, Vit
+được	Nc, Ng, Aa, Vt, Na, Vit
+chỉ định	Nc, Ng, Aa, Vt, Na, Vit
+thay thế	Nc, Ng, Aa, Vit, Na, Vt
+khi	Nl, Vim, Vt, Vtim, Na
+cấp trên	Vit, Nc, Ng, Np, Aa, Na
+từ chức	Ng, Nc, Aa, Na, Vt, Np
+kể từ	Nc, Ng, Aa, Na, Vt, Vit
+ngày	Nc, Ng, Aa, Vt, Na, Vit
+28/3	Nc, Aa, Ng, Vit, Na, Vt
+.	.

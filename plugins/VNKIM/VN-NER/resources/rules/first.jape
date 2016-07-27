@@ -1,0 +1,27 @@
+Phase:	first
+Input: Token vnWord
+Options: control = appelt debug = no
+
+// this has to be run first of all
+// contains any macros etc needed only for standard grammars
+
+Rule: Number
+Priority: 1000
+(
+   {Token.kind == number}
+)
+:number
+-->
+:number.Number = {rule = Number}
+
+
+/* 35.đại từ xưng hô
+ * 
+ */
+Rule:  Pp
+(
+   {vnWord.POS == "Pp"}
+):pp
+-->
+:pp.Pp = {rule = Pp}
+

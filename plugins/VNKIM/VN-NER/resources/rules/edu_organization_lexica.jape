@@ -1,0 +1,77 @@
+/* 
+ *  edu_organization_lexica.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Edu_Organization_Lexica
+Input: Lookup
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Lexical resources of Educational Organization
+///////////////////////////////////////////////////////////////////
+Rule: TTGDDT
+// Tiền tố tổ chức giáo dục đào tạo
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tiền_tố_Tổ_chức_giáo_dục_đào_tạo"}
+):ttgddt
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("ttgddt");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "TTGDDT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "TTGDDT", features);
+}
+
+Rule: TDDT
+// Trình độ đào tạo
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Trình_độ_đào_tạo"}
+):tddt
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("tddt");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "TDDT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "TDDT", features);
+}
+
+Rule: LHTC
+// Loại hình tổ chức
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Loại_hình_tổ_chức"}
+):lhtc
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lhtc");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "LHTC");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "LHTC", features);
+}
+
+Rule: NNDT
+// Loại hình đào tạo
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngành_nghề_đào_tạo"}
+):nndt
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("nndt");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NNDT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NNDT", features);
+}
+
+

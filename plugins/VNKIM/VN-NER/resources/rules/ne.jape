@@ -1,0 +1,60 @@
+Phase:	Ne
+Input: Lookup Sentence Split Token Number Pp Upper Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent
+Options: control = appelt debug = no
+
+Rule: NamedEntity
+Priority: 3000
+(
+   {Upper} |
+   {FirstPerson} |
+   {LastPerson} |
+   {TempPerson.kind == personName} |
+   {TempLocation.kind == locationName} |
+   {TempOrganization.kind == organizationName}
+):namedEntity
+-->
+{
+	gate.AnnotationSet ne = (gate.AnnotationSet)bindings.get("namedEntity");
+	gate.Annotation neAnn = (gate.Annotation)ne.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	String st = doc.getContent().toString().substring(ne.firstNode().getOffset().intValue(), ne.lastNode().getOffset().intValue());
+	java.util.StringTokenizer tokenizer = new java.util.StringTokenizer(st);
+
+	String standardized = vnkim.util.StringTransformations.standardized(st);
+
+	if (st.length() == standardized.length())
+	{
+		// Remove all annotations inside
+		Long extendStart = neAnn.getStartNode().getOffset();
+		Long extendEnd = neAnn.getEndNode().getOffset();
+		gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+		Iterator remIter = tempSet.iterator();
+		java.util.HashSet remSet = new java.util.HashSet();
+
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Np"))
+				remSet.add(ann);
+		}
+		if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+
+		if (neAnn.getType().equals("TempPerson"))
+		features.put("kind", "canBePersonName1");
+
+		int i = 0;
+		for (i = 0; i < st.length() && (java.lang.Character.isWhitespace(st.charAt(i)) || java.lang.Character.isUpperCase(st.charAt(i))); i++);
+		if (i < st.length() && (neAnn.getType().equals("TempOrganization") || neAnn.getType().equals("TempLocation")))
+		{
+			for (i = 0; i < st.length() && (java.lang.Character.isWhitespace(st.charAt(i)) 
+			|| java.lang.Character.isUpperCase(st.charAt(i))); i++);
+			if (i < st.length() && tokenizer.countTokens() == 2)
+				features.put("kind", "canBePersonName2");
+		}
+
+		features.put("rule", "NamedEntity");
+		annotations.add(ne.firstNode(), ne.lastNode(), "NamedEntity", features);
+	}
+}

@@ -1,0 +1,259 @@
+/*
+ *  person_name_ex.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Person_Name_Ex
+Input: 	Sentence Split Token Number Pp Np TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLDT
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////
+// Person Rules
+
+
+Rule: PersonContext1a
+Priority: 200
+(
+   ({TempPerson.kind == personPlus}):availableOrg
+   {Token.string == "và"}
+)
+(
+   {TempPerson}
+):person
+ -->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation avOrgAnn = (gate.Annotation)personSet.iterator().next();
+
+	gate.FeatureMap features = personAnn.getFeatures();
+	features.put("kind", avOrgAnn.getFeatures().get("kind"));
+	features.put("rule", "PersonContext1a");
+	annotations.remove(personAnn);
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+
+Rule: PersonContext1b
+Priority: 100
+(
+   ({TempPerson.kind == personPlus}):availableOrg
+   {Token.string == "và"}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", personAnn.getFeatures().get("kind"));
+	features.put("rule", "PersonContext1b");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+
+Rule: NotPersonContext2
+Priority: 60
+(
+   {TempPerson}
+   {Token.string == "và"}
+   {TempPerson}
+):noNeed
+ -->
+{}
+
+
+Rule: PersonContext2a
+Priority: 40
+(
+   ({TempPerson}):availableOrg
+   {Token.string == "và"}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", personAnn.getFeatures().get("kind"));
+	features.put("rule", "PersonContext2a");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+Rule: PersonContext2b
+Priority: 40
+// He and Mary
+// Anne and I
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+{Token.string == "và"}
+({TempPerson}):availableOrg
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", "personName");
+	features.put("rule", "PersonContext2b");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+/*
+Rule: PersonContext3a
+Priority: 40
+// Anne and I
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+(
+   {Token.string == ","}
+   ({TempPerson.kind == personPlus}):availableOrg
+)
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", "personName");
+	features.put("rule", "PersonContext3a");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+*/
+
+Rule: PersonContext3b
+Priority: 40
+// He and Mary
+(
+   {Token.string == "Các"} |
+   {Token.string == "các"} |
+   {Token.string == "Những"}
+   {Token.string == "những"}
+   {Token.string == "Một"}
+   {Token.string == "một"}
+   {Token.string == "Hai"}
+   {Token.string == "hai"}
+   {Token.string == "Ba"}
+   {Token.string == "ba"}
+   {Token.string == "Bốn"}
+   {Token.string == "bốn"}
+   {Token.string == "năm"}
+   {Token.string == "sáu"}
+   {Token.string == "Bảy"}
+   {Token.string == "bảy"}
+   {Token.string == "Tám"}
+   {Token.string == "tám"}
+   {Token.string == "Chín"}
+   {Token.string == "chín"}
+   {Token.string == "Mười"}
+   {Token.string == "mười"}
+)
+(
+   ({TempPerson.kind == personPlus}):availableOrg
+   {Token.string == ","}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", "personPlus");
+	features.put("rule", "PersonContext3b");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+
+Rule: PersonContext4a
+Priority: 40
+// Anne and I
+(
+   {Token.string == "như"}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+(
+   {Token.string == ","}
+   ({TempPerson}):availableOrg
+)
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", personAnn.getFeatures().get("kind"));
+	features.put("rule", "PersonContext4a");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+
+Rule: PersonContext4b
+Priority: 40
+// He and Mary
+(
+   {Token.string == "như"}
+)
+(
+   ({TempPerson}):availableOrg
+   {Token.string == ","}
+)
+(
+   (({NamedEntity} | {Np})+) (({Number})?)
+):person
+ -->
+{
+	gate.FeatureMap features = Factory.newFeatureMap();
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("availableOrg");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	//features.put("class", personAnn.getFeatures().get("class"));
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	features.put("kind", personAnn.getFeatures().get("kind"));
+	features.put("rule", "PersonContext4b");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson",features);
+}
+
+

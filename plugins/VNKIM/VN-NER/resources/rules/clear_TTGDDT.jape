@@ -1,0 +1,55 @@
+/*
+ *  clear_TTGDDT.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Clear_TTGDDT
+Input: TTGDDT TDDT LHTC NNDT
+Options: control = brill debug = no
+
+Rule: Remove_TTGDDT
+(
+   {TTGDDT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+Rule: Remove_TDDT
+(
+   {TDDT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+Rule: Remove_LHTC
+(
+   {LHTC}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}
+
+Rule: Remove_NNDT
+(
+   {NNDT}
+):remove
+ -->
+{
+	gate.AnnotationSet remove = (gate.AnnotationSet)bindings.get("remove");
+	gate.Annotation remAnn = (gate.Annotation)remove.iterator().next();
+	annotations.remove(remAnn);
+}

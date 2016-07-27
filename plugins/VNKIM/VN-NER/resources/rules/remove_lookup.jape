@@ -1,0 +1,161 @@
+Phase:	remove_lookup
+Input: Sentence
+Options: control = appelt debug = no
+
+// this has to be run first of all
+// contains any macros etc needed only for standard grammars
+
+Rule: RemoveLookup
+(
+   {Sentence}
+)
+:sentence
+-->
+{
+	gate.AnnotationSet sentenceSet = (gate.AnnotationSet)bindings.get("sentence");
+	gate.AnnotationSet lookup = (gate.AnnotationSet)inputAS.get("Lookup");
+
+	if (lookup != null && lookup.size() > 0)
+	{
+		// get only Upper annotations in range of the sentence
+		gate.AnnotationSet lookupInSent = lookup.get(sentenceSet.firstNode().getOffset(), sentenceSet.lastNode().getOffset());
+		if (lookupInSent != null && lookupInSent.size() > 0 )
+		{
+			// find Upper annotation at the start of the Sentence if any
+			Iterator it = lookupInSent.iterator();
+			gate.Annotation lookupAnn;
+			while (it.hasNext())
+			{
+				lookupAnn = (gate.Annotation)it.next();
+
+
+				if (lookupAnn.getStartNode().getOffset().compareTo(sentenceSet.firstNode().getOffset()) == 0 )
+				{
+					String pure = doc.getContent().toString().substring(lookupAnn.getStartNode().getOffset().intValue(),
+					lookupAnn.getEndNode().getOffset().intValue());
+					int i = 0;
+					for (i = 0; i < pure.length() && !java.lang.Character.isWhitespace(pure.charAt(i)); i++);
+					if (i == pure.length())
+					{
+						String clas = (String)lookupAnn.getFeatures().get("class");
+
+						if (vnkim.database.VNQueryAPI.isSubClassOf(clas,
+							"http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thực_thể")
+						&& !vnkim.database.VNQueryAPI.isSubClassOf(clas,
+							"http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Quốc_gia")
+						&& !vnkim.database.VNQueryAPI.isSubClassOf(clas,
+							"http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Vùng_đông_dân_cư"))
+						{
+							i = 0;
+							int nbrUpper = 0;
+							int nbrLower = 0;
+							while (i < pure.length())
+							{
+								if (java.lang.Character.isUpperCase(pure.charAt(i))) nbrUpper++;
+								else if (java.lang.Character.isLowerCase(pure.charAt(i)))
+									nbrLower++;
+								i++;
+							}
+							if (((nbrUpper + nbrLower == pure.length()) && nbrLower > 0)
+							|| (nbrUpper <= pure.length() - nbrUpper - nbrLower))
+							{
+								// check Upper annotation on the same place
+								gate.AnnotationSet tempSet =
+									(gate.AnnotationSet)inputAS.getContained(
+									lookupAnn.getStartNode().getOffset(),
+									lookupAnn.getEndNode().getOffset());
+
+								Iterator remIter = tempSet.iterator();
+								java.util.HashSet remSet = new java.util.HashSet();
+
+								while (remIter.hasNext())
+								{
+									Annotation ann = (Annotation)remIter.next();
+
+									if (ann.getType().equalsIgnoreCase("Upper")
+									|| (ann.getType().equalsIgnoreCase("vnWord") 
+									&& ann.getFeatures().get("POS").equals("Np")))
+										remSet.add(ann);
+								} // while
+								if (remSet != null && remSet.size() > 0)
+									inputAS.removeAll(remSet);
+								inputAS.remove(lookupAnn);
+							} // if
+						}
+						else if (clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Họ_người")
+						|| clas.equals("http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tên_người"))
+						{
+							// check Upper annotation on the same place
+							gate.AnnotationSet tempSet = 
+								(gate.AnnotationSet)inputAS.getContained(
+								lookupAnn.getStartNode().getOffset(),
+								lookupAnn.getEndNode().getOffset());
+
+							Iterator remIter = tempSet.iterator();
+							java.util.HashSet remSet = new java.util.HashSet();
+
+							while (remIter.hasNext())
+							{
+								Annotation ann = (Annotation)remIter.next();
+
+								if (ann.getType().equalsIgnoreCase("Upper")
+								|| (ann.getType().equalsIgnoreCase("vnWord") 
+								&& ann.getFeatures().get("POS").equals("Np")))
+									remSet.add(ann);
+							} // while
+							if (remSet != null && remSet.size() > 0) inputAS.removeAll(remSet);
+							inputAS.remove(lookupAnn);
+						} // if
+					}
+				} // if
+			} // while
+		} // if
+	} // if
+
+	gate.AnnotationSet upper = (gate.AnnotationSet)inputAS.get("Upper");
+	if (upper != null && upper.size() > 0)
+	{
+		// get only Upper annotations in range of the sentence
+		gate.AnnotationSet upperInSent = upper.get(sentenceSet.firstNode().getOffset(), sentenceSet.lastNode().getOffset());
+		if (upperInSent != null && upperInSent.size() > 0 )
+		{
+			// find Upper annotation at the start of the Sentence if any
+			Iterator it = upperInSent.iterator();
+			gate.Annotation upperAnn;
+			while (it.hasNext())
+			{
+				upperAnn = (gate.Annotation)it.next();
+				if (upperAnn.getStartNode().getOffset().compareTo(sentenceSet.firstNode().getOffset()) == 0 )
+					inputAS.remove(upperAnn);
+			} // while
+		} // if
+	} // if
+
+
+	gate.AnnotationSet vnWord = (gate.AnnotationSet)inputAS.get("vnWord");
+	if (vnWord != null && vnWord.size() > 0)
+	{
+		// get only Upper annotations in range of the sentence
+		gate.AnnotationSet vnWordInSent = vnWord.get(sentenceSet.firstNode().getOffset(), sentenceSet.lastNode().getOffset());
+		if (vnWordInSent != null && vnWordInSent.size() > 0 )
+		{
+			// find Upper annotation at the start of the Sentence if any
+			Iterator it = vnWordInSent.iterator();
+			gate.Annotation vnWordAnn;
+			while (it.hasNext())
+			{
+				vnWordAnn = (gate.Annotation)it.next();
+				if (vnWordAnn.getStartNode().getOffset().compareTo(sentenceSet.firstNode().getOffset()) == 0 )
+				{
+					String pure = doc.getContent().toString().substring(vnWordAnn.getStartNode().getOffset().intValue(),
+					vnWordAnn.getEndNode().getOffset().intValue());
+					int i = 0;
+					for (i = 0; i < pure.length() && !java.lang.Character.isWhitespace(pure.charAt(i)); i++);
+					if (i == pure.length())
+						inputAS.remove(vnWordAnn);
+				} // if
+			} // while
+		} // if
+	} // if
+
+}

@@ -1,0 +1,40 @@
+/*
+ *  all_other_lr_transducer.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	All_Other_LR_Transducer
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// All Other Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	LR_Abstract
+Priority: 145
+(
+   {NLHTTN}
+):abstName
+{Token.orth == lowercase}
+-->
+:abstName.LR_TempAbstract = {rule = LR_Abstract}
+
+
+Rule:	LR_Event
+Priority: 145
+(
+   {NLBC}
+):eventName
+{Token.orth == lowercase}
+-->
+:eventName.LR_TempEvent = {rule = LR_Event}

@@ -1,0 +1,85 @@
+/*
+ *  organization_name_lookup.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Organization_Name_Lookup
+Input: Lookup
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////////////
+// Organization Rules
+///////////////////////////////////////////////////////////////////
+Rule:	GazOrganization
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức"}
+)
+:org
+ -->
+{
+	gate.AnnotationSet org = (gate.AnnotationSet)bindings.get("org");
+	gate.Annotation orgAnn = (gate.Annotation)org.iterator().next();
+
+	gate.FeatureMap features = orgAnn.getFeatures();
+	String clas = (String)features.get("class");
+
+	String pure = doc.getContent().toString().substring(orgAnn.getStartNode().getOffset().intValue(), orgAnn.getEndNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	// Remove all annotations inside
+	Long extendStart = orgAnn.getStartNode().getOffset();
+	Long extendStart2 = new Long(orgAnn.getStartNode().getOffset().longValue() + 1);
+
+	Long extendEnd = orgAnn.getEndNode().getOffset();
+	Long extendEnd2 = new Long(orgAnn.getEndNode().getOffset().longValue() - 1);
+
+	gate.AnnotationSet tempSet;
+	java.util.HashSet remSet = null;
+
+	if (extendStart.intValue() <= extendEnd2.intValue())
+	{
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd2);
+		remSet = new java.util.HashSet();
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split") || ann.getType().equalsIgnoreCase("Upper"))
+				remSet.add(ann);
+		}
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+	}
+
+	if (extendStart2.intValue() <= extendEnd.intValue())
+	{
+		tempSet = (gate.AnnotationSet)annotations.getContained(extendStart2, extendEnd);
+		remSet = new java.util.HashSet();
+
+		Iterator remIter = tempSet.iterator();
+		while (remIter.hasNext())
+		{
+			Annotation ann = (Annotation)remIter.next();
+			if (ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+			|| ann.getType().equalsIgnoreCase("Split") || ann.getType().equalsIgnoreCase("Upper"))
+				remSet.add(ann);
+		}
+
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+	}
+
+	String st = doc.getContent().toString().substring(org.firstNode().getOffset().intValue(), org.lastNode().getOffset().intValue());
+	java.util.StringTokenizer tokenizer = new java.util.StringTokenizer(st);
+	if (!st.startsWith("Thành phố") && !st.startsWith("thành phố") && !st.startsWith("TP "))
+		if (tokenizer.countTokens() >= 5
+		|| (vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo") 
+		     && tokenizer.countTokens() >= 4))
+			features.put("kind", "organizationPlus");
+		else features.put("kind", "organizationName");
+	features.put("rule", "GazOrganization");
+	annotations.add(org.firstNode(), org.lastNode(), "TempOrganization", features);
+}
+

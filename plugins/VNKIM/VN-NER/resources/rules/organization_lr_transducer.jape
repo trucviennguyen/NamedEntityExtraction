@@ -1,0 +1,206 @@
+/*
+ *  organization_lr_transducer.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Organization_LR_Transducer
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+	LR_TempPerson LR_TempLocation
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Macro definitions
+// may use some macros form person_name.jape
+// if change the order - check this first!
+///////////////////////////////////////////////////////////////////
+
+Macro:  TTCT
+// Tiền tố công ty
+(
+      {TTCT}
+)
+
+Macro:  LHCT
+// Loại hình công ty
+(
+      {LHCT}
+)
+
+Macro:  LHKD
+// Loại hình kinh doanh
+(
+      {LHKD}
+)
+
+Macro: TTGDDT
+// Tiền tố tổ chức giáo dục đào tạo
+(
+      {TTGDDT}
+)
+
+Macro: TDDT
+// Trình độ đào tạo
+(
+      {TDDT}
+)
+
+Macro: LHTC
+// Loại hình tổ chức
+(
+      {LHTC}
+)
+
+Macro: NNDT
+// Loại hình đào tạo
+(
+      {NNDT}
+)
+
+
+Macro: TITLE
+(
+   (  ({Title})+
+      ({JobTitle})+
+   ) |
+   (
+      ({Title})+
+   ) |
+   (  ({Title})+
+      ({JobTitle})?
+   ) |
+   (
+      ({JobTitle})+
+   )
+)
+
+
+
+///////////////////////////////////////////////////////////////////
+// Organization Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	LR_CompanyX_1
+Priority: 145
+(
+   (TTCT)
+   (LHCT)?
+   (LHKD)?
+):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_CompanyX_1");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+
+Rule:	LR_CompanyX_2
+Priority: 145
+(
+   (LHCT)
+   (LHKD)
+):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_CompanyX_2");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+
+/* Set: On / Off
+ */
+/*
+Rule:	LR_CompanyX_3
+Priority: 145
+(LHKD):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_CompanyX_3");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+*/
+
+
+Rule:	LR_EducationalOrgX_1
+Priority: 145
+(
+   (TTGDDT):ttgddt
+   ((TDDT)?):tddt
+   ((LHTC)?):lhtc
+):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_EducationalOrgX_1");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+
+
+Rule:	LR_EducationalOrgX_2
+Priority: 145
+(
+   ((TTGDDT)?):ttgddt
+   (TDDT):tddt
+   ((LHTC)?):lhtc
+):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_EducationalOrgX_2");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+
+
+Rule:	LR_EducationalOrgX_3
+Priority: 145
+(
+   (TTGDDT):ttgddt
+   ((TDDT)?):tddt
+   (LHTC):lhtc
+):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_EducationalOrgX_3");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+
+
+Rule:	LR_EducationalOrgX_4
+Priority: 145
+(
+   ((TTGDDT)?):ttgddt
+   (TDDT):tddt
+   (LHTC):lhtc
+):orgName
+({Token.orth == lowercase} | {Token.kind == punctuation} | {TempPerson})
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("rule", "LR_EducationalOrgX_4");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "LR_TempOrganization",features);
+}
+
+
+

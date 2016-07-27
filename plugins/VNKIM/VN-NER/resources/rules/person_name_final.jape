@@ -1,0 +1,32 @@
+/*
+ *  person_name_final.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+Phase:	Person_Name_Final
+Input: TempPerson
+Options: control = brill debug = no
+
+Rule: PersonFinal
+Priority: 40
+(
+   {TempPerson}
+)
+:person
+ -->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+
+	gate.FeatureMap features = personAnn.getFeatures();
+
+	features.put("rule", "PersonFinal");
+	annotations.add(person.firstNode(), person.lastNode(), "Con_người", features);
+}
+
+

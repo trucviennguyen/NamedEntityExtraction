@@ -1,0 +1,57 @@
+/*
+ *  location_null_filter.jape
+ *
+ * Truc Vien, 07 Mars 2005
+ *
+ *  $Id: final.jape,v 1.15 2004/12/22 11:20:36 borislav Exp $
+ */
+
+
+/* Đối với mỗi thực thể TempLocation không có inst (ie. không có trong KB)
+ * Loại bỏ tất cả các chú giải nằm trùng một phần
+ * hoặc toàn phần kể cả TempPerson và TempOrganization
+ */
+Phase:	Location_Null_Filter
+Input: TempLocation
+Options: control = appelt debug = no
+
+Rule: Location_Null_Filter
+Priority: 40
+(
+   {TempLocation.inst == "null"}
+)
+:loc
+ -->
+{
+	gate.AnnotationSet locSet = (gate.AnnotationSet)bindings.get("loc");
+
+	// if it does exist, take the first element in the set
+	gate.Annotation locAnn = (gate.Annotation)locSet.iterator().next();
+
+	Long extendStart = locAnn.getStartNode().getOffset();
+	Long extendEnd = locAnn.getEndNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+	java.util.HashSet remSet = new java.util.HashSet();
+	Iterator iter = tempSet.iterator();
+
+	while (iter.hasNext())
+	{
+		Annotation ann = (Annotation)iter.next();
+		String inst1 = (String)ann.getFeatures().get("inst");
+
+		if (ann.getType().equals("NamedEntity") || ann.getType().equals("Np") 
+		|| ann.getType().equals("Token") || ann.getType().equals("SpaceToken") 
+		|| ann.getType().equals("Split")
+		|| (ann.getType().equals("Organization") && ((String)ann.getFeatures().get("kind")).equals("organizationPlus")))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+	if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+	gate.FeatureMap features = locAnn.getFeatures();
+	features.put("rule", "Location_Null_Filter");
+	annotations.add(locSet.firstNode(), locSet.lastNode(), "TempLocation", features);
+}
+
+

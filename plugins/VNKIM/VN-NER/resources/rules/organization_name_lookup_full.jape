@@ -1,0 +1,980 @@
+/*
+ *  organization_name_lookup_full.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Organization_Name_Lookup_Full
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+Options: control = brill debug = no
+
+/* Chuyển tất cả mọi tổ chức: Công ty, giáo dục đào tạo từ chỉ có tên riêng 
+ * sang dạng đầy đủ (có ngữ liệu) nếu có
+ */
+
+///////////////////////////////////////////////////////////////////
+// Macro definitions
+// may use some macros form person_name.jape
+// if change the order - check this first!
+///////////////////////////////////////////////////////////////////
+
+Macro:  TTCT
+// Tiền tố công ty
+(
+      {TTCT}
+)
+
+Macro:  LHCT
+// Loại hình công ty
+(
+      {LHCT}
+)
+
+Macro:  LHKD
+// Loại hình kinh doanh
+(
+      {LHKD}
+)
+
+Macro: TTGDDT
+// Tiền tố tổ chức giáo dục đào tạo
+(
+      {TTGDDT}
+)
+
+Macro: TDDT
+// Trình độ đào tạo
+(
+      {TDDT}
+)
+
+Macro: LHTC
+// Loại hình tổ chức
+(
+      {LHTC}
+)
+
+Macro: NNDT
+// Loại hình đào tạo
+(
+      {NNDT}
+)
+
+Macro:  NLTCNN
+// Ngữ liệu tổ chức nhà nước
+(
+      {NLTCNN}
+)
+
+Macro: TITLE
+(
+   (  ({Title})+
+      ({JobTitle})+
+   ) |
+   (
+      ({Title})+
+   ) |
+   (  ({Title})+
+      ({JobTitle})?
+   ) |
+   (
+      ({JobTitle})+
+   )
+)
+
+///////////////////////////////////////////////////////////////////
+// Organization Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	CompanyX_1
+Priority: 145
+(
+   (TTCT)
+   (LHCT)?
+   (LHKD)?
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = orgPureAnn.getFeatures();
+	String pure = doc.getContent().toString().substring(orgPure.firstNode().getOffset().intValue(), orgPure.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	features.put("kind", "organizationPlus");
+	features.put("rule", "CompanyX_1");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization",features);
+}
+
+Rule:	CompanyX_2
+Priority: 145
+(
+   (LHCT)
+   (LHKD)
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = orgPureAnn.getFeatures();
+	String pure = doc.getContent().toString().substring(orgPure.firstNode().getOffset().intValue(), orgPure.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	features.put("kind", "organizationPlus");
+	features.put("rule", "CompanyX_2");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization",features);
+}
+
+/* Set: On / Off
+ */
+/*
+Rule:	CompanyX_3
+Priority: 145
+(
+   (LHKD)
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = orgPureAnn.getFeatures();
+	String pure = doc.getContent().toString().substring(orgPure.firstNode().getOffset().intValue(), orgPure.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	features.put("kind", "organizationPlus");
+	features.put("rule", "CompanyX_3");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization",features);
+}
+*/
+
+
+Rule:	EducationalOrgX_1
+Priority: 145
+(
+   (
+         (TTGDDT):ttgddt
+         ((TDDT)?):tddt
+         ((LHTC)?):lhtc
+   )
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	// create an annotation set consisting of all the annotations for orgName
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet ttdt = (gate.AnnotationSet)bindings.get("ttdt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet tddt = (gate.AnnotationSet)bindings.get("tddt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet lhtc = (gate.AnnotationSet)bindings.get("lhtc");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet nndt = (gate.AnnotationSet)bindings.get("nndt");
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = orgPure.firstNode().getOffset();
+	Long extendEnd = orgPure.lastNode().getOffset();
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	String clasTtdt = null;	boolean ttdtOk = false;
+	String clasTddt = null;	boolean tddtOk = false;
+	String clasLhtc = null;	boolean lhtcOk = false;
+	String clasLhdt = null;	boolean nndtOk = false;
+	String inst = null;
+
+	if (tddt != null && tddt.size() > 0)
+	{
+		gate.Annotation tddtAnn = (gate.Annotation)tddt.iterator().next();
+		clasTddt= (String)tddtAnn.getFeatures().get("class");
+
+		if (!clasTddt.substring(46).equalsIgnoreCase("Trình_độ_đào_tạo"))
+		{
+			tddtOk = true;
+			if (clas != null && clasTddt.substring(63).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTddt.substring(0, 46) + clasTddt.substring(63));
+		}
+	}
+
+
+	if (!tddtOk && lhtc != null && lhtc.size() > 0)
+	{
+		gate.Annotation lhtcAnn = (gate.Annotation)lhtc.iterator().next();
+		clasLhtc= (String)lhtcAnn.getFeatures().get("class");
+
+		if (!clasLhtc.substring(46).equalsIgnoreCase("Loại_hình_tổ_chức"))
+		{
+			lhtcOk = true;
+			if (clas != null && clasLhtc.substring(64).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhtc.substring(0, 46) + clasLhtc.substring(64));
+		}
+	}
+
+
+	if (!tddtOk && !lhtcOk && ttdt != null && ttdt.size() > 0)
+	{
+		gate.Annotation ttdtAnn = (gate.Annotation)ttdt.iterator().next();
+		clasTtdt= (String)ttdtAnn.getFeatures().get("class");
+		ttdtOk = true;
+
+		if (!clasTtdt.substring(54).equalsIgnoreCase("Tổ_chức_giáo_dục_đào_tạo"))
+		{
+			ttdtOk = true;
+			if (clas != null && clasTtdt.substring(54).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTtdt.substring(0, 46) + clasTtdt.substring(54));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && nndt != null && nndt.size() > 0)
+	{
+		gate.Annotation nndtAnn = (gate.Annotation)nndt.iterator().next();
+
+		clasLhdt= (String)nndtAnn.getFeatures().get("class");
+
+		if (!clasLhdt.substring(46).equalsIgnoreCase("Ngành_nghề_đào_tạo"))
+		{
+			nndtOk = true;
+			if (clas != null && clasLhdt.substring(57).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhdt.substring(0, 46) + clasLhdt.substring(57));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && !nndtOk)
+		if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo"))
+			features = orgPureAnn.getFeatures();
+		else 
+			features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo");
+
+	// create some new features
+	features.put("kind", "organizationPlus");
+	features.put("rule", "EducationalOrgX_1");
+
+	// create a TempOrg annotation and add the features we've created
+	annotations.remove(orgPureAnn);
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+
+
+Rule:	EducationalOrgX_2
+Priority: 145
+(
+   (
+         ((TTGDDT)?):ttgddt
+         (TDDT):tddt
+         ((LHTC)?):lhtc
+   )
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	// create an annotation set consisting of all the annotations for orgName
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet ttdt = (gate.AnnotationSet)bindings.get("ttdt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet tddt = (gate.AnnotationSet)bindings.get("tddt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet lhtc = (gate.AnnotationSet)bindings.get("lhtc");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet nndt = (gate.AnnotationSet)bindings.get("nndt");
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = orgPure.firstNode().getOffset();
+	Long extendEnd = orgPure.lastNode().getOffset();
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	String clasTtdt = null;	boolean ttdtOk = false;
+	String clasTddt = null;	boolean tddtOk = false;
+	String clasLhtc = null;	boolean lhtcOk = false;
+	String clasLhdt = null;	boolean nndtOk = false;
+	String inst = null;
+
+	if (tddt != null && tddt.size() > 0)
+	{
+		gate.Annotation tddtAnn = (gate.Annotation)tddt.iterator().next();
+		clasTddt= (String)tddtAnn.getFeatures().get("class");
+
+		if (!clasTddt.substring(46).equalsIgnoreCase("Trình_độ_đào_tạo"))
+		{
+			tddtOk = true;
+			if (clas != null && clasTddt.substring(63).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTddt.substring(0, 46) + clasTddt.substring(63));
+		}
+	}
+
+
+	if (!tddtOk && lhtc != null && lhtc.size() > 0)
+	{
+		gate.Annotation lhtcAnn = (gate.Annotation)lhtc.iterator().next();
+		clasLhtc= (String)lhtcAnn.getFeatures().get("class");
+
+		if (!clasLhtc.substring(46).equalsIgnoreCase("Loại_hình_tổ_chức"))
+		{
+			lhtcOk = true;
+			if (clas != null && clasLhtc.substring(64).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhtc.substring(0, 46) + clasLhtc.substring(64));
+		}
+	}
+
+
+	if (!tddtOk && !lhtcOk && ttdt != null && ttdt.size() > 0)
+	{
+		gate.Annotation ttdtAnn = (gate.Annotation)ttdt.iterator().next();
+		clasTtdt= (String)ttdtAnn.getFeatures().get("class");
+		ttdtOk = true;
+
+		if (!clasTtdt.substring(54).equalsIgnoreCase("Tổ_chức_giáo_dục_đào_tạo"))
+		{
+			ttdtOk = true;
+			if (clas != null && clasTtdt.substring(54).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTtdt.substring(0, 46) + clasTtdt.substring(54));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && nndt != null && nndt.size() > 0)
+	{
+		gate.Annotation nndtAnn = (gate.Annotation)nndt.iterator().next();
+
+		clasLhdt= (String)nndtAnn.getFeatures().get("class");
+
+		if (!clasLhdt.substring(46).equalsIgnoreCase("Ngành_nghề_đào_tạo"))
+		{
+			nndtOk = true;
+			if (clas != null && clasLhdt.substring(57).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhdt.substring(0, 46) + clasLhdt.substring(57));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && !nndtOk)
+		if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo"))
+			features = orgPureAnn.getFeatures();
+		else 
+			features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo");
+
+	// create some new features
+	features.put("kind", "organizationPlus");
+	features.put("rule", "EducationalOrgX_2");
+
+	// create a TempOrg annotation and add the features we've created
+	annotations.remove(orgPureAnn);
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+
+
+Rule:	EducationalOrgX_3
+Priority: 145
+(
+   (
+         (TTGDDT):ttgddt
+         ((TDDT)?):tddt
+         (LHTC):lhtc
+   )
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	// create an annotation set consisting of all the annotations for orgName
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet ttdt = (gate.AnnotationSet)bindings.get("ttdt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet tddt = (gate.AnnotationSet)bindings.get("tddt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet lhtc = (gate.AnnotationSet)bindings.get("lhtc");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet nndt = (gate.AnnotationSet)bindings.get("nndt");
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = orgPure.firstNode().getOffset();
+	Long extendEnd = orgPure.lastNode().getOffset();
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	String clasTtdt = null;	boolean ttdtOk = false;
+	String clasTddt = null;	boolean tddtOk = false;
+	String clasLhtc = null;	boolean lhtcOk = false;
+	String clasLhdt = null;	boolean nndtOk = false;
+	String inst = null;
+
+	if (tddt != null && tddt.size() > 0)
+	{
+		gate.Annotation tddtAnn = (gate.Annotation)tddt.iterator().next();
+		clasTddt= (String)tddtAnn.getFeatures().get("class");
+
+		if (!clasTddt.substring(46).equalsIgnoreCase("Trình_độ_đào_tạo"))
+		{
+			tddtOk = true;
+			if (clas != null && clasTddt.substring(63).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTddt.substring(0, 46) + clasTddt.substring(63));
+		}
+	}
+
+
+	if (!tddtOk && lhtc != null && lhtc.size() > 0)
+	{
+		gate.Annotation lhtcAnn = (gate.Annotation)lhtc.iterator().next();
+		clasLhtc= (String)lhtcAnn.getFeatures().get("class");
+
+		if (!clasLhtc.substring(46).equalsIgnoreCase("Loại_hình_tổ_chức"))
+		{
+			lhtcOk = true;
+			if (clas != null && clasLhtc.substring(64).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhtc.substring(0, 46) + clasLhtc.substring(64));
+		}
+	}
+
+
+	if (!tddtOk && !lhtcOk && ttdt != null && ttdt.size() > 0)
+	{
+		gate.Annotation ttdtAnn = (gate.Annotation)ttdt.iterator().next();
+		clasTtdt= (String)ttdtAnn.getFeatures().get("class");
+		ttdtOk = true;
+
+		if (!clasTtdt.substring(54).equalsIgnoreCase("Tổ_chức_giáo_dục_đào_tạo"))
+		{
+			ttdtOk = true;
+			if (clas != null && clasTtdt.substring(54).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTtdt.substring(0, 46) + clasTtdt.substring(54));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && nndt != null && nndt.size() > 0)
+	{
+		gate.Annotation nndtAnn = (gate.Annotation)nndt.iterator().next();
+
+		clasLhdt= (String)nndtAnn.getFeatures().get("class");
+
+		if (!clasLhdt.substring(46).equalsIgnoreCase("Ngành_nghề_đào_tạo"))
+		{
+			nndtOk = true;
+			if (clas != null && clasLhdt.substring(57).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhdt.substring(0, 46) + clasLhdt.substring(57));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && !nndtOk)
+		if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo"))
+			features = orgPureAnn.getFeatures();
+		else 
+			features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo");
+
+	// create some new features
+	features.put("kind", "organizationPlus");
+	features.put("rule", "EducationalOrgX_3");
+
+	// create a TempOrg annotation and add the features we've created
+	annotations.remove(orgPureAnn);
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+
+
+Rule:	EducationalOrgX_4
+Priority: 145
+(
+   (
+         ((TTGDDT)?):ttgddt
+         (TDDT):tddt
+         (LHTC):lhtc
+   )
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	// create an annotation set consisting of all the annotations for orgName
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet ttdt = (gate.AnnotationSet)bindings.get("ttdt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet tddt = (gate.AnnotationSet)bindings.get("tddt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet lhtc = (gate.AnnotationSet)bindings.get("lhtc");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet nndt = (gate.AnnotationSet)bindings.get("nndt");
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = orgPure.firstNode().getOffset();
+	Long extendEnd = orgPure.lastNode().getOffset();
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	String clasTtdt = null;	boolean ttdtOk = false;
+	String clasTddt = null;	boolean tddtOk = false;
+	String clasLhtc = null;	boolean lhtcOk = false;
+	String clasLhdt = null;	boolean nndtOk = false;
+	String inst = null;
+
+	if (tddt != null && tddt.size() > 0)
+	{
+		gate.Annotation tddtAnn = (gate.Annotation)tddt.iterator().next();
+		clasTddt= (String)tddtAnn.getFeatures().get("class");
+
+		if (!clasTddt.substring(46).equalsIgnoreCase("Trình_độ_đào_tạo"))
+		{
+			tddtOk = true;
+			if (clas != null && clasTddt.substring(63).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTddt.substring(0, 46) + clasTddt.substring(63));
+		}
+	}
+
+
+	if (!tddtOk && lhtc != null && lhtc.size() > 0)
+	{
+		gate.Annotation lhtcAnn = (gate.Annotation)lhtc.iterator().next();
+		clasLhtc= (String)lhtcAnn.getFeatures().get("class");
+
+		if (!clasLhtc.substring(46).equalsIgnoreCase("Loại_hình_tổ_chức"))
+		{
+			lhtcOk = true;
+			if (clas != null && clasLhtc.substring(64).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhtc.substring(0, 46) + clasLhtc.substring(64));
+		}
+	}
+
+
+	if (!tddtOk && !lhtcOk && ttdt != null && ttdt.size() > 0)
+	{
+		gate.Annotation ttdtAnn = (gate.Annotation)ttdt.iterator().next();
+		clasTtdt= (String)ttdtAnn.getFeatures().get("class");
+		ttdtOk = true;
+
+		if (!clasTtdt.substring(54).equalsIgnoreCase("Tổ_chức_giáo_dục_đào_tạo"))
+		{
+			ttdtOk = true;
+			if (clas != null && clasTtdt.substring(54).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTtdt.substring(0, 46) + clasTtdt.substring(54));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && nndt != null && nndt.size() > 0)
+	{
+		gate.Annotation nndtAnn = (gate.Annotation)nndt.iterator().next();
+
+		clasLhdt= (String)nndtAnn.getFeatures().get("class");
+
+		if (!clasLhdt.substring(46).equalsIgnoreCase("Ngành_nghề_đào_tạo"))
+		{
+			nndtOk = true;
+			if (clas != null && clasLhdt.substring(57).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhdt.substring(0, 46) + clasLhdt.substring(57));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && !nndtOk)
+		if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo"))
+			features = orgPureAnn.getFeatures();
+		else 
+			features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo");
+
+	// create some new features
+	features.put("kind", "organizationPlus");
+	features.put("rule", "EducationalOrgX_4");
+
+	// create a TempOrg annotation and add the features we've created
+	annotations.remove(orgPureAnn);
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+
+/*
+Rule:	EducationalOrgX_5
+Priority: 145
+(
+   (
+         (TTGDDT):ttgddt
+         ((TDDT)?):tddt
+         ((LHTC)?):lhtc
+         (NNDT):nndt
+   )
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	// create an annotation set consisting of all the annotations for orgName
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet ttdt = (gate.AnnotationSet)bindings.get("ttdt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet tddt = (gate.AnnotationSet)bindings.get("tddt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet lhtc = (gate.AnnotationSet)bindings.get("lhtc");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet nndt = (gate.AnnotationSet)bindings.get("nndt");
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = orgPure.firstNode().getOffset();
+	Long extendEnd = orgPure.lastNode().getOffset();
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	String clasTtdt = null;	boolean ttdtOk = false;
+	String clasTddt = null;	boolean tddtOk = false;
+	String clasLhtc = null;	boolean lhtcOk = false;
+	String clasLhdt = null;	boolean nndtOk = false;
+	String inst = null;
+
+	if (tddt != null && tddt.size() > 0)
+	{
+		gate.Annotation tddtAnn = (gate.Annotation)tddt.iterator().next();
+		clasTddt= (String)tddtAnn.getFeatures().get("class");
+
+		if (!clasTddt.substring(46).equalsIgnoreCase("Trình_độ_đào_tạo"))
+		{
+			tddtOk = true;
+			if (clas != null && clasTddt.substring(63).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTddt.substring(0, 46) + clasTddt.substring(63));
+		}
+	}
+
+
+	if (!tddtOk && lhtc != null && lhtc.size() > 0)
+	{
+		gate.Annotation lhtcAnn = (gate.Annotation)lhtc.iterator().next();
+		clasLhtc= (String)lhtcAnn.getFeatures().get("class");
+
+		if (!clasLhtc.substring(46).equalsIgnoreCase("Loại_hình_tổ_chức"))
+		{
+			lhtcOk = true;
+			if (clas != null && clasLhtc.substring(64).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhtc.substring(0, 46) + clasLhtc.substring(64));
+		}
+	}
+
+
+	if (!tddtOk && !lhtcOk && ttdt != null && ttdt.size() > 0)
+	{
+		gate.Annotation ttdtAnn = (gate.Annotation)ttdt.iterator().next();
+		clasTtdt= (String)ttdtAnn.getFeatures().get("class");
+		ttdtOk = true;
+
+		if (!clasTtdt.substring(54).equalsIgnoreCase("Tổ_chức_giáo_dục_đào_tạo"))
+		{
+			ttdtOk = true;
+			if (clas != null && clasTtdt.substring(54).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTtdt.substring(0, 46) + clasTtdt.substring(54));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && nndt != null && nndt.size() > 0)
+	{
+		gate.Annotation nndtAnn = (gate.Annotation)nndt.iterator().next();
+
+		clasLhdt= (String)nndtAnn.getFeatures().get("class");
+
+		if (!clasLhdt.substring(46).equalsIgnoreCase("Ngành_nghề_đào_tạo"))
+		{
+			nndtOk = true;
+			if (clas != null && clasLhdt.substring(57).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhdt.substring(0, 46) + clasLhdt.substring(57));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && !nndtOk)
+		if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo"))
+			features = orgPureAnn.getFeatures();
+		else 
+			features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo");
+
+	// create some new features
+	features.put("kind", "organizationPlus");
+	features.put("rule", "EducationalOrgX_5");
+
+	// create a TempOrg annotation and add the features we've created
+	annotations.remove(orgPureAnn);
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+
+
+Rule:	EducationalOrgX_6
+Priority: 145
+(
+   (
+         ((TTGDDT)?):ttgddt
+         (TDDT):tddt
+         ((LHTC)?):lhtc
+         (NNDT):nndt
+   )
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	// create an annotation set consisting of all the annotations for orgName
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet ttdt = (gate.AnnotationSet)bindings.get("ttdt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet tddt = (gate.AnnotationSet)bindings.get("tddt");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet lhtc = (gate.AnnotationSet)bindings.get("lhtc");
+
+	// create an annotation set consisting of the annotation matching Lookup of Organization
+	gate.AnnotationSet nndt = (gate.AnnotationSet)bindings.get("nndt");
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = orgPure.firstNode().getOffset();
+	Long extendEnd = orgPure.lastNode().getOffset();
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	String clasTtdt = null;	boolean ttdtOk = false;
+	String clasTddt = null;	boolean tddtOk = false;
+	String clasLhtc = null;	boolean lhtcOk = false;
+	String clasLhdt = null;	boolean nndtOk = false;
+	String inst = null;
+
+	if (tddt != null && tddt.size() > 0)
+	{
+		gate.Annotation tddtAnn = (gate.Annotation)tddt.iterator().next();
+		clasTddt= (String)tddtAnn.getFeatures().get("class");
+
+		if (!clasTddt.substring(46).equalsIgnoreCase("Trình_độ_đào_tạo"))
+		{
+			tddtOk = true;
+			if (clas != null && clasTddt.substring(63).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTddt.substring(0, 46) + clasTddt.substring(63));
+		}
+	}
+
+
+	if (!tddtOk && lhtc != null && lhtc.size() > 0)
+	{
+		gate.Annotation lhtcAnn = (gate.Annotation)lhtc.iterator().next();
+		clasLhtc= (String)lhtcAnn.getFeatures().get("class");
+
+		if (!clasLhtc.substring(46).equalsIgnoreCase("Loại_hình_tổ_chức"))
+		{
+			lhtcOk = true;
+			if (clas != null && clasLhtc.substring(64).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhtc.substring(0, 46) + clasLhtc.substring(64));
+		}
+	}
+
+
+	if (!tddtOk && !lhtcOk && ttdt != null && ttdt.size() > 0)
+	{
+		gate.Annotation ttdtAnn = (gate.Annotation)ttdt.iterator().next();
+		clasTtdt= (String)ttdtAnn.getFeatures().get("class");
+		ttdtOk = true;
+
+		if (!clasTtdt.substring(54).equalsIgnoreCase("Tổ_chức_giáo_dục_đào_tạo"))
+		{
+			ttdtOk = true;
+			if (clas != null && clasTtdt.substring(54).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasTtdt.substring(0, 46) + clasTtdt.substring(54));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && nndt != null && nndt.size() > 0)
+	{
+		gate.Annotation nndtAnn = (gate.Annotation)nndt.iterator().next();
+
+		clasLhdt= (String)nndtAnn.getFeatures().get("class");
+
+		if (!clasLhdt.substring(46).equalsIgnoreCase("Ngành_nghề_đào_tạo"))
+		{
+			nndtOk = true;
+			if (clas != null && clasLhdt.substring(57).equals(clas.substring(46)))
+				features = orgPureAnn.getFeatures();
+			else
+				features.put("class", clasLhdt.substring(0, 46) + clasLhdt.substring(57));
+		}
+	}
+
+	if (!tddtOk && !lhtcOk && !ttdtOk && !nndtOk)
+		if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo"))
+			features = orgPureAnn.getFeatures();
+		else 
+			features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_giáo_dục_đào_tạo");
+
+	// create some new features
+	features.put("kind", "organizationPlus");
+	features.put("rule", "EducationalOrgX_6");
+
+	// create a TempOrg annotation and add the features we've created
+	annotations.remove(orgPureAnn);
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization", features);
+}
+*/
+
+Rule:	GovermentOrgX
+Priority: 145
+(
+   (NLTCNN)
+   ({TempOrganization}):orgPure
+)
+:orgName
+-->
+{
+	gate.AnnotationSet orgSet = (gate.AnnotationSet)bindings.get("orgName");
+	gate.Annotation orgAnn = (gate.Annotation)orgSet.iterator().next();
+
+	gate.AnnotationSet orgPure = (gate.AnnotationSet)bindings.get("orgPure");
+	gate.Annotation orgPureAnn = (gate.Annotation)orgPure.iterator().next();
+
+	String clas = (String)orgPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = null;
+
+	if (clas != null && vnkim.database.VNQueryAPI.isSubClassOf(clas, "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_nhà_nước"))
+		features = orgPureAnn.getFeatures();
+	else
+	{
+		features = Factory.newFeatureMap();
+		features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Tổ_chức_nhà_nước");
+	}
+
+	features.put("kind", "organizationPlus");
+	features.put("rule", "GovermentOrgX");
+	annotations.add(orgSet.firstNode(), orgSet.lastNode(), "TempOrganization",features);
+}

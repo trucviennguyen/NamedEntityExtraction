@@ -1,0 +1,79 @@
+/*
+ *  person_name_transducer_post.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+Phase:	Person_Name_Transducer_Post
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////
+// Person Rules
+
+Rule: 	Person_Semi_Full_1
+Priority: 50
+// F.W. Jones
+// Fred Jones
+
+(
+   (
+      ({NamedEntity.kind == canBePersonName1})
+      ({FirstPerson})
+   )
+):person
+-->
+{
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	// get original string of the trusted text part
+	String pure = doc.getContent().toString().substring(personSet.firstNode().getOffset().intValue(), personSet.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	features.put("kind", "personName");
+	features.put("rule", "Person_Semi_Full_2");
+	annotations.add(personSet.firstNode(), personSet.lastNode(), "TempPerson", features);
+}
+
+
+Rule: 	Person_Semi_Full_2
+Priority: 50
+// F.W. Jones
+// Fred Jones
+
+(
+   (
+      ({LastPerson})
+      ({NamedEntity.kind == canBePersonName1} | {NamedEntity.kind == canBePersonName2})
+   )
+):person
+-->
+{
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	// get original string of the trusted text part
+	String pure = doc.getContent().toString().substring(personSet.firstNode().getOffset().intValue(), personSet.lastNode().getOffset().intValue());
+	features.put("originalName", pure);
+
+	features.put("kind", "personName");
+	features.put("rule", "Person_Semi_Full_2");
+	annotations.add(personSet.firstNode(), personSet.lastNode(), "TempPerson", features);
+}
+
+
+
+

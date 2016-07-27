@@ -1,0 +1,28 @@
+Phase:	np_notNp
+Input: vnWord
+Options: control = appelt debug = no
+
+// this has to be run first of all
+// contains any Rules etc needed only for standard grammars
+
+
+/* 1.danh từ riêng
+ * Việt Nam, TPHCM, Trần Quang Khải
+ */
+Rule:  Np
+Priority: 1000
+(
+   {vnWord.POS == "Np"}
+):np
+-->
+:np.Np = {rule = Np}
+
+
+// 2.không phải danh từ riêng
+Rule:  NotNp
+Priority: 50
+(
+   {vnWord}
+):notNp
+-->
+:notNp.NotNp = {rule = NotNp}

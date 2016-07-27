@@ -1,0 +1,88 @@
+/*
+*  unknown.jape
+*
+* Copyright (c) 1998-2001, The University of Sheffield.
+*
+*  This file is part of GATE (see http://gate.ac.uk/), and is free
+*  software, licenced under the GNU Library General Public License,
+*  Version 2, June 1991 (in the distribution as file licence.html,
+*  and also available at http://gate.ac.uk/gate/licence.html).
+*
+*  Diana Maynard, 10 Sep 2001
+*
+*  $Id: unknown.jape,v 1.6 2004/12/22 11:20:39 borislav Exp $
+*/
+
+Phase:	Unknown
+Input:	Sentence Split Token SpaceToken Number Pp Np TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLDT
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+Options: control = appelt
+
+
+MACRO: Upper
+(
+   (
+      ({Number})?
+   )
+   (
+      {Token.orth == upperInitial} |
+      {Token.orth == mixedCaps} |
+      {Token.orth == allCaps}
+   )
+   (
+      ({Number})?
+   )
+)
+
+
+Rule: Token_Upper
+Priority: 40
+(
+   ((Upper)+)
+   (
+      (
+         {Token.string == "."} |
+         {Token.string == "-"} |
+         {Token.string == "/"}
+      )
+      ((Upper)+)
+   )*
+):name
+ -->
+{	
+	gate.AnnotationSet nameSet = (gate.AnnotationSet)bindings.get("name");
+	gate.Annotation nameAnn = (gate.Annotation)nameSet.iterator().next();
+
+	gate.FeatureMap features = nameAnn.getFeatures();
+
+	Long extendStart = nameSet.firstNode().getOffset();
+	Long extendEnd = nameSet.lastNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)inputAS.getContained(extendStart, extendEnd);
+	java.util.HashSet remSet = new java.util.HashSet();
+	Iterator iter = tempSet.iterator();
+
+	while (iter.hasNext())
+	{
+		Annotation ann = (Annotation)iter.next();
+
+		if (ann.getType().equals("TempPerson") || ann.getType().equals("TempLocation") || ann.getType().equals("TempOrganization"))
+		{
+			Long extendStart1 = ann.getStartNode().getOffset();
+			Long extendEnd1 = ann.getEndNode().getOffset();
+
+			if (extendStart.intValue() < extendStart1.intValue() || extendEnd1.intValue() < extendEnd.intValue())
+				remSet.add(ann);
+		}
+	}
+
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+
+	features.put("rule", "Token_Upper");
+	annotations.add(nameSet.firstNode(), nameSet.lastNode(), "Token_Upper",features);
+}
+
+
+

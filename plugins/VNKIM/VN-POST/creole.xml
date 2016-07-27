@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!-- $Id: creole.xml,v 1.3 2004/07/23 16:33:14 valyt Exp $ -->
+<!-- creole.xml directory file for ANNIE Processing resources -->
+<CREOLE-DIRECTORY>
+  <!-- Processing Resources -->
+  <CREOLE>
+    <!-- creole.xml for the Englishtokeniser -->
+    <RESOURCE>
+      <NAME>VINA Vietnamese Tokeniser</NAME>
+      <CLASS>gate.creole.tokeniser.DefaultTokeniser</CLASS>
+      <COMMENT>A customisable Vietnamese tokeniser</COMMENT>
+      <PARAMETER NAME="document" COMMENT="The document to be tokenised"
+        RUNTIME="true">gate.Document</PARAMETER>
+      <PARAMETER NAME="annotationSetName" RUNTIME="true"
+        COMMENT="The annotation set to be used for the generated annotations"
+        OPTIONAL="true">java.lang.String</PARAMETER>
+      <PARAMETER NAME="tokeniserRulesURL"
+        DEFAULT="resources/tokeniser/DefaultTokeniser.rules"
+        COMMENT="The URL for the rules file" SUFFIXES="rules" >
+        java.net.URL</PARAMETER>
+      <PARAMETER NAME="transducerGrammarURL"
+        DEFAULT="resources/tokeniser/vnpn.jape"
+        COMMENT="The URL for the postprocessing transducer" SUFFIXES="jape">
+        java.net.URL</PARAMETER>
+      <PARAMETER NAME="encoding"
+        COMMENT="The encoding used for reading the definitions" DEFAULT="UTF-8">
+        java.lang.String</PARAMETER>
+      <ICON>shefTokeniser.gif</ICON>
+    </RESOURCE>
+
+	<!-- creole.xml for vnWord  -->
+    <RESOURCE>
+	  <JAR>VN-POST.jar</JAR>
+	  <NAME>VINA Word Segmentation</NAME>
+      <CLASS>gate.creole.vnWord.vnWord</CLASS>
+      <COMMENT> ChauNguyen's Vietnamese Word Segmentation.</COMMENT>
+      <PARAMETER NAME="document" RUNTIME="true"
+        COMMENT="The document to be processed">gate.Document</PARAMETER>
+      <PARAMETER NAME="annotationSetName" RUNTIME="true"
+        COMMENT="The annotation set to be used for the generated annotations"
+        OPTIONAL="true">java.lang.String</PARAMETER>
+      <PARAMETER NAME="listsURL"
+        DEFAULT="resources/vnres/vnlists.def"
+        COMMENT="The URL to the file with list of lists" SUFFIXES="def">
+        java.net.URL</PARAMETER>
+      <PARAMETER DEFAULT="UTF-8"
+        COMMENT="The encoding used for reading the definitions" NAME="encoding">
+        java.lang.String</PARAMETER>
+      <PARAMETER DEFAULT="true"
+        COMMENT="Should this gazetteer diferentiate on case"
+        NAME="caseSensitive">java.lang.Boolean</PARAMETER>
+      <PARAMETER DEFAULT="true"
+        COMMENT="Should this gazetteer only match whole words"
+        NAME="wholeWordsOnly">java.lang.Boolean</PARAMETER>
+      <ICON>shefGazetteer.gif</ICON>
+    </RESOURCE>
+
+   <!-- creole.xml for vnPOSTagger-->
+    <RESOURCE>
+	  <JAR>VN-POST.jar</JAR>
+	  <NAME>VINA POS Tagger</NAME>
+      <CLASS>gate.creole.vnPOSTagger.vnPOSTagger</CLASS>
+      <COMMENT>ChauNguyen's POS tagger</COMMENT>
+    </RESOURCE>   
+  </CREOLE>     
+</CREOLE-DIRECTORY>

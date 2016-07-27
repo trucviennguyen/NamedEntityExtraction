@@ -1,0 +1,63 @@
+/*
+ *  person_name_transducer.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+Phase:	Person_Name_Transducer
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////
+// Person Rules
+
+Rule: 	PersonFull
+Priority: 500
+// F.W. Jones
+// Fred Jones
+
+(
+   {LastPerson}
+   ({NamedEntity} | {Np})?
+   ({NamedEntity} | {Np})?
+   ({NamedEntity} | {Np})?
+   {FirstPerson}
+):person
+-->
+{
+	gate.AnnotationSet person = (gate.AnnotationSet)bindings.get("person");
+	gate.Annotation personAnn = (gate.Annotation)person.iterator().next();
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+	features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Con_người");
+
+	Long extendStart = person.firstNode().getOffset();
+	Long extendEnd = person.lastNode().getOffset();
+
+	// get original string of the trusted text part
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+	features.put("originalName", pure);
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)inputAS.getContained(extendStart, extendEnd);
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+		if (ann.getType().equals("LastPerson") || ann.getType().equals("FirstPerson"))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+
+	features.put("kind", "personName");
+	features.put("rule", "PersonFull");
+	annotations.add(person.firstNode(), person.lastNode(), "TempPerson", features);
+}
+

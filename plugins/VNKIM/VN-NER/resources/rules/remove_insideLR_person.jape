@@ -1,0 +1,54 @@
+/*
+ *  remove_insideLR_person.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Remove_InsideLR_Person
+Input: LR_TempPerson
+Options: control = brill debug = no
+
+
+///////////////////////////////////////////////////////////////////
+// Person Rules
+///////////////////////////////////////////////////////////////////
+
+/* Đối với mỗi thực thể TempPerson có dạng đầy đủ (vd. có tiền tố công ty hay loại hình công ty), 
+ * loại bỏ tất cả các chú giải TempPerson và TempPerson trùng một phần hay toàn phần
+ */
+
+Rule:	Remove_InsideLR_Person
+Priority: 145
+(
+   {LR_TempPerson}
+)
+:personName
+-->
+{
+	gate.AnnotationSet personSet = (gate.AnnotationSet)bindings.get("personName");
+	gate.Annotation personAnn = (gate.Annotation)personSet.iterator().next();
+
+	// Remove all annotations inside
+	Long extendStart = personAnn.getStartNode().getOffset();
+	Long extendEnd = personAnn.getEndNode().getOffset();
+
+	String pure = doc.getContent().toString().substring(extendStart.intValue(), extendEnd.intValue());
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)annotations.getContained(extendStart, extendEnd);
+
+	Iterator remIter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+
+	while (remIter.hasNext())
+	{
+		Annotation ann = (Annotation)remIter.next();
+
+		Long extendStart1 = ann.getStartNode().getOffset();
+		Long extendEnd1 = ann.getEndNode().getOffset();
+
+		if (ann.getType().equalsIgnoreCase("TempPerson") || ann.getType().equalsIgnoreCase("TempLocation") 
+		|| ann.getType().equalsIgnoreCase("TempOrganization"))
+			remSet.add(ann);
+	}
+	if (remSet != null && remSet.size() > 0) annotations.removeAll(remSet);
+}
+

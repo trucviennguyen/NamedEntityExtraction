@@ -1,0 +1,123 @@
+/*
+*  unknown.jape
+*
+* Copyright (c) 1998-2001, The University of Sheffield.
+*
+*  This file is part of GATE (see http://gate.ac.uk/), and is free
+*  software, licenced under the GNU Library General Public License,
+*  Version 2, June 1991 (in the distribution as file licence.html,
+*  and also available at http://gate.ac.uk/gate/licence.html).
+*
+*  Diana Maynard, 10 Sep 2001
+*
+*  $Id: unknown.jape,v 1.6 2004/12/22 11:20:39 borislav Exp $
+*/
+
+Phase:	Unknown
+Input: 	Sentence Split Token Number Pp Np TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLDT
+	LR_TempPerson LR_TempLocation LR_TempOrganization LR_TempObject LR_TempAbstract LR_TempEvent
+	Token_Upper
+Options: control = appelt
+
+
+// Negative rules
+Rule:	Not_Unknown_1
+Priority: 150
+(
+   ({Token_Upper})+
+   (
+      {TempPerson.rule == Spur_PersonTitle} |
+      {TempPerson.rule == Spur_PersonTitle_Org} |
+      {TempPerson.rule == Spur_Country_Person}
+   )
+):noNeed
+-->
+{}
+
+
+Rule:	Not_Unknown_2
+Priority: 120
+(
+   ({Token_Upper})+
+   (
+      {TempPerson} | {TempOrganization} | {TempLocation}
+   )
+   (
+      {Token.orth == lowercase} | {Split} | {Token.kind == punctuation}
+   )
+):noNeed
+-->
+{}
+
+
+Rule:	Not_Unknown_3
+Priority: 100
+(
+   (
+      {TempPerson} | {TempOrganization} | {TempLocation}
+   )
+   (
+      {Token.orth == lowercase} | {Split} | {Token.kind == punctuation}
+   )
+):noNeed
+-->
+{}
+
+
+Rule: Unknown
+Priority: 40
+(
+   ({Token_Upper})+
+):name
+ -->
+{
+	gate.AnnotationSet nameSet = (gate.AnnotationSet)bindings.get("name");
+	gate.Annotation nameAnn = (gate.Annotation)nameSet.iterator().next();
+
+	gate.FeatureMap features = Factory.newFeatureMap();
+
+	Long extendStart = nameSet.firstNode().getOffset();
+	Long extendEnd = nameSet.lastNode().getOffset();
+
+	gate.AnnotationSet tempSet = (gate.AnnotationSet)inputAS.getContained(extendStart, extendEnd);
+	Iterator iter = tempSet.iterator();
+	java.util.HashSet remSet = new java.util.HashSet();
+	boolean remOk = true;
+
+	while (iter.hasNext())
+	{
+		Annotation ann = (Annotation)iter.next();
+
+		if (ann.getType().equalsIgnoreCase("NamedEntity") || ann.getType().equalsIgnoreCase("Np") 
+		|| ann.getType().equalsIgnoreCase("Token") || ann.getType().equalsIgnoreCase("SpaceToken") 
+		|| ann.getType().equalsIgnoreCase("Split")
+		|| ann.getType().equalsIgnoreCase("Title") || ann.getType().equalsIgnoreCase("JobTitle"))
+			remSet.add(ann);
+		else
+		{
+			Long extendStart1 = ann.getStartNode().getOffset();
+			Long extendEnd1 = ann.getEndNode().getOffset();
+
+			if (extendStart.intValue() == extendStart1.intValue() && extendEnd.intValue() == extendEnd1.intValue())
+				remOk = false;
+			else if (ann.getType().equals("TempPerson") || ann.getType().equals("TempLocation") || ann.getType().equals("TempOrganization"))
+			{
+				if (extendStart.intValue() < extendStart1.intValue() && extendEnd.intValue() == extendEnd1.intValue())
+					remOk = false;
+			}
+		}
+	}
+
+	if (remOk)
+	{
+		if (remSet != null && remSet.size() > 0) tempSet.removeAll(remSet);
+		if (tempSet != null && tempSet.size() > 0) annotations.removeAll(tempSet);
+
+		features.put("class", "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Thực_thể");
+		features.put("rule", "Unknown");
+		annotations.add(nameSet.firstNode(), nameSet.lastNode(), "Thực_thể",features);
+	}
+}
+

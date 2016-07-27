@@ -1,0 +1,430 @@
+/* 
+ *  other_organization_lexica.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Other_Organization_Lexica
+Input: Lookup Token
+Options: control = appelt debug = no
+
+///////////////////////////////////////////////////////////////////
+// Lexical resources of Organization
+///////////////////////////////////////////////////////////////////
+
+Rule: Error
+Priority: 1000
+(
+   {Token.orth == lowercase}
+)
+:error
+-->
+{}
+
+
+Rule:  NLBCQNB
+Priority: 100
+// Ngữ liệu Bộ và cơ quan ngang bộ
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Bộ_và_cơ_quan_ngang_bộ"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLBCQNB");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLBCQNB", features);
+}
+
+
+Rule:  NLCLBBD
+Priority: 100
+// Ngữ liệu Câu lạc bộ bóng đá
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Câu_lạc_bộ_bóng_đá"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLCLBBD");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLCLBBD", features);
+}
+
+
+
+Rule:  NLCLBTT
+Priority: 100
+// Ngữ liệu Câu lạc bộ thể thao
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Câu_lạc_bộ_thể_thao"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLCLBTT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLCLBTT", features);
+}
+
+
+Rule:  NLCNPBK
+Priority: 100
+// Ngữ liệu Chi nhánh Phòng Ban Khoa
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Chi_nhánh_Phòng_Ban_Khoa"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLCNPBK");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLCNPBK", features);
+}
+
+
+Rule:  NLCQTP
+Priority: 100
+// Ngữ liệu Cơ quan tư pháp
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Cơ_quan_tư_pháp"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLCQTP");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLCQTP", features);
+}
+
+
+Rule:  NLDCT
+Priority: 100
+// Ngữ liệu Đảng chính trị
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Đảng_chính_trị"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLDCT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLDCT", features);
+}
+
+
+Rule:  NLDN
+Priority: 100
+// Ngữ liệu Đội nhóm
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Đội_nhóm"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLDN");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLDN", features);
+}
+
+
+Rule:  NLHDND
+Priority: 100
+// Ngữ liệu Hội đồng nhân dân
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Hội_đồng_nhân_dân"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLHDND");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLHDND", features);
+}
+
+
+Rule:  NLLDTT
+Priority: 100
+// Ngữ liệu Liên đoàn thể thao
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Liên_đoàn_thể_thao"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLLDTT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLLDTT", features);
+}
+
+
+Rule:  NLNOICAC
+Priority: 100
+// Ngữ liệu Nội các
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Nội_các"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLNOICAC");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLNOICAC", features);
+}
+
+
+Rule:  NLQH
+Priority: 100
+// Ngữ liệu Quốc hội
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Quốc_hội"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLQH");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLQH", features);
+}
+
+
+Rule:  NLSO
+Priority: 100
+// Ngữ liệu Sở
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Sở"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLSO");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLSO", features);
+}
+
+
+Rule:  NLTCNN
+// Ngữ liệu Tổ chức nhà nước
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Tổ_chức_nhà_nước"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	if (clas.endsWith("Ngữ_liệu_Tổ_chức_nhà_nước"))
+	{
+		features.put("rule", "NLTCNN");
+		features.put("class", clas);
+		annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTCNN", features);
+	}
+}
+
+
+Rule:  NLTCQT
+Priority: 100
+// Ngữ liệu Tổ chức Quốc tế
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Tổ_chức_quốc_tế"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLTCQT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTCQT", features);
+}
+
+
+Rule:  NLTCTT
+Priority: 100
+// Ngữ liệu Tổ chức thể thao
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Tổ_chức_thể_thao"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+
+	if (clas.endsWith("Ngữ_liệu_Tổ_chức_thể_thao"))
+	{
+		features.put("rule", "NLTCTT");
+		features.put("class", clas);
+		annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTCTT", features);
+	}
+}
+
+
+Rule:  NLTCTG
+Priority: 100
+// Ngữ liệu Tổ chức tôn giáo
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Tổ_chức_tôn_giáo"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLTCTG");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTCTG", features);
+}
+
+
+Rule:  NLTCXH
+Priority: 100
+// Ngữ liệu Tổ chức xã hội
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Tổ_chức_xã_hội"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLTCXH");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTCXH", features);
+}
+
+
+Rule:  NLTRT
+Priority: 100
+// Ngữ liệu Trung tâm
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Trung_tâm"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLTRT");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTRT", features);
+}
+
+
+Rule:  NLTTGDCK
+Priority: 100
+// Ngữ liệu Trung tâm giao dịch chứng khoán
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Trung_tâm_giao_dịch_chứng_khoán"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLTTGDCK");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTTGDCK", features);
+}
+
+
+Rule:  NLUBND
+Priority: 100
+// Ngữ liệu Ủy ban nhân dân
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Ủy_ban_nhân_dân"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLUBND");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLUBND", features);
+}
+
+
+Rule:  NLVNC
+Priority: 100
+// Ngữ liệu Viện nghiên cứu
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Viện_nghiên_cứu"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+	features.put("rule", "NLVNC");
+	features.put("class", clas);
+	annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLVNC", features);
+}
+
+
+
+Rule:  NLTCNC
+Priority: 100
+// Ngữ liệu Tổ chức nghiên cứu
+(
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Ngữ_liệu_Tổ_chức_nghiên_cứu"}
+):lr_org
+-->
+{
+	gate.AnnotationSet lrSet = (gate.AnnotationSet)bindings.get("lr_org");
+	gate.Annotation lrAnn = (gate.Annotation)lrSet.iterator().next();
+	gate.FeatureMap features = Factory.newFeatureMap();
+	String clas = (String)lrAnn.getFeatures().get("class");
+
+	if (clas.endsWith("Ngữ_liệu_Tổ_chức_nghiên_cứu"))
+	{
+		features.put("rule", "NLVNC");
+		features.put("class", clas);
+		annotations.add(lrSet.firstNode(), lrSet.lastNode(), "NLTCNC", features);
+	}
+}
+

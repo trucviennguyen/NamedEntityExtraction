@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!-- $Id: creole.xml,v 1.4 2004/12/01 15:34:20 niraj Exp $ -->
+<!-- creole.xml directory file for VNKIM Processing resources -->
+<CREOLE-DIRECTORY>
+  <!-- Processing Resources -->
+  <CREOLE>
+    <!-- creole.xml for Hash Gazetteer (ex Natural)-->
+	<!-- creole.xml for VNKIM Hash Gazetteer (ex Natural)-->
+    <RESOURCE>
+      <NAME>VN Hash Gazetteer</NAME>
+      <CLASS>vnkim.creole.gazetteer.VNHashGazetteer</CLASS>
+      <COMMENT>&lt;html&gt;A list lookup component implemented by VNKIM.&lt;/html&gt;</COMMENT>
+      <PARAMETER NAME="document" RUNTIME="true"
+        COMMENT="The document to be processed">gate.Document</PARAMETER>
+      <PARAMETER NAME="annotationSetName" RUNTIME="true"
+        COMMENT="The annotation set to be used for the generated annotations"
+        OPTIONAL="true">java.lang.String</PARAMETER>
+      <PARAMETER NAME="KB" DEFAULT="KB.properties"
+		COMMENT="The knowledge base used"> java.net.URL</PARAMETER>
+      <PARAMETER DEFAULT="UTF-8"
+        COMMENT="The encoding used for reading the definitions" NAME="encoding">
+        java.lang.String</PARAMETER>
+      <PARAMETER DEFAULT="true" NAME="caseSensitive"
+        COMMENT="Should this gazetteer diferentiate on case. Currently the Gazetteer works only in case sensitive mode.">
+        java.lang.Boolean</PARAMETER>
+      <ICON>shefGazetteer.gif</ICON>
+    </RESOURCE>
+</CREOLE>
+</CREOLE-DIRECTORY>

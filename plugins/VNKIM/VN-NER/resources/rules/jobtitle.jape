@@ -1,0 +1,45 @@
+Phase:	Jobtitle
+Input: Lookup Sentence Split Token Number Pp Upper Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+Options: control = appelt
+
+
+Rule: Jobtitle_All
+(
+   (
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Từ_khóa_nghề_nghiệp"} |
+      {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Từ_khóa_chức_vụ"}
+   )
+   (
+      (
+         {Token.kind == punctuation} |
+         {Token.string == "kiêm"}
+      )?
+      (
+         {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Từ_khóa_nghề_nghiệp"} |
+         {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Từ_khóa_chức_vụ"}
+      )
+   )?
+)
+:jobtitle
+-->
+:jobtitle.JobTitle = {rule = "JobTitle_All"}
+
+
+Rule: Jobtitle1
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Từ_khóa_nghề_nghiệp"}
+)
+:jobtitle
+-->
+:jobtitle.JobTitle = {rule = "JobTitle1"}
+
+
+Rule: Jobtitle2
+(
+   {Lookup.class == "http://www.dit.hcmut.edu.vn/vnkim/vnkimo.rdfs#Từ_khóa_chức_vụ"}
+)
+:jobtitle
+-->
+:jobtitle.JobTitle = {rule = "JobTitle2"}
+
+

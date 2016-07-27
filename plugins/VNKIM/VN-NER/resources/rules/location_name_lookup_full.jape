@@ -1,0 +1,77 @@
+/*
+ *  location_name_lookup_full.jape
+ *  Copyright 2004-2006 Truc Vien, HCMUT.
+ */
+
+Phase:	Location_Name_Lookup_Full
+Input: 	Sentence Split Token Number Pp Np FirstPerson LastPerson TempPerson TempLocation TempOrganization TempAbstract TempEvent NamedEntity
+	JobTitle Title
+	NLNC
+	TTCT LHCT LHKD
+	TTGDDT TDDT LHTC NNDT
+	NLBCQNB NLCLBBD NLCLBTT NLCNPBK NLCQTP NLDCT NLDN NLHDND NLLDTT NLNOICAC NLQH NLSO NLTCNN NLTCQT NLTCTT NLTCTG NLTCXH NLTRT NLTTGDCK
+	NLUBND NLVNC NLTCNC
+	NLDT
+	NLHTTN NLBC
+Options: control = brill debug = no
+
+///////////////////////////////////////////////////////////////////
+// Location Rules
+///////////////////////////////////////////////////////////////////
+
+Rule:	LocationX
+Priority: 146
+(
+   ({NLNC}):locPre
+   ({TempLocation}):locPure
+)
+:locName
+-->
+{
+	// create an annotation set consisting of all the annotations for locName
+	gate.AnnotationSet locSet = (gate.AnnotationSet)bindings.get("locName");
+	gate.Annotation locAnn = (gate.Annotation)locSet.iterator().next();
+
+	gate.AnnotationSet locPre = (gate.AnnotationSet)bindings.get("locPre");
+	gate.Annotation locPreAnn = (gate.Annotation)locPre.iterator().next();
+
+	gate.AnnotationSet locPure = (gate.AnnotationSet)bindings.get("locPure");
+	gate.Annotation locPureAnn = (gate.Annotation)locPure.iterator().next();
+
+	String clasPre = (String)locPreAnn.getFeatures().get("class");
+	String clas = (String)locPureAnn.getFeatures().get("class");
+
+	gate.FeatureMap features = null;
+	boolean Ok = true;
+
+	String pure = doc.getContent().toString().substring(locPureAnn.getStartNode().getOffset().intValue(), locPureAnn.getEndNode().getOffset().intValue());
+
+	if (clas != null && clasPre.substring(55).equals(clas.substring(46)))
+		features = locPureAnn.getFeatures();
+	else
+	{
+		java.util.StringTokenizer tokenizer = new java.util.StringTokenizer(pure);
+		String standardized = vnkim.util.StringTransformations.standardized(pure);
+
+		if (tokenizer.countTokens() == 1 || pure.length() == standardized.length())
+		{
+			features = Factory.newFeatureMap();
+			features.put("class", clasPre.substring(0, 46) + clasPre.substring(55));
+		}
+		else Ok = false;
+	}
+
+	if (Ok)
+	{
+		features.put("originalName", pure);
+
+		// create some new features
+		features.put("kind", "locationPlus");
+		features.put("rule", "LocationX");
+
+		// create a TempLoc annotation and add the features we've created
+		annotations.add(locSet.firstNode(), locSet.lastNode(), "TempLocation", features);
+	}
+}
+
+
